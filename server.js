@@ -9,5 +9,7 @@ app.get("/", (req, res) => {
     res.render('../api/index')
 })
 
-app.listen(1337)
+const userRouter = require('./routes/users')
+app.use('/users', userRouter)
 
+app.listen(1337)
