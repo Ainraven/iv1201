@@ -1,6 +1,10 @@
 const express = require('express');
 require('dotenv').config({path: `${process.cwd()}/.env`});
 
+//initializes the models, might not be needed here but this is the code snippet
+var initModels = require("./models/init-models");
+models = initModels;
+
 const app = express();
 
 app.get('/', (req,res) => {
