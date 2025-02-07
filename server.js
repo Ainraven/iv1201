@@ -1,11 +1,20 @@
 const express = require('express');
 require('dotenv').config({path: `${process.cwd()}/.env`});
 
-//initializes the models, might not be needed here but this is the code snippet
-var initModels = require("./models/init-models");
-models = initModels;
-
 const app = express();
+
+const config = './integration/config/database.js'
+const database = require (config);
+
+
+try {
+    database.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+
+
 
 app.get('/', (req,res) => {
     res.json({
