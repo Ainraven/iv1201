@@ -48,7 +48,18 @@ class UserDAO {
         } catch (error) {
             console("womp womp")
         }
+    }
 
+    async findUserById(ID){
+        try{
+            const person = await this.Person.findAll({
+                where:{person_id:ID}
+            })
+            return person;
+        }
+        catch(error){
+            console.log("Couldn't find user with ID" + ID)
+        }
     }
 }
 
