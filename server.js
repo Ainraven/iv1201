@@ -1,11 +1,10 @@
-const express = require('express');
 require('dotenv').config({path: `${process.cwd()}/.env`});
 
+const express = require('express');
+const databaseConfigPath = './integration/config/database.js'
+
+const database = require (databaseConfigPath);
 const app = express();
-
-const config = './integration/config/database.js'
-const database = require (config);
-
 
 try {
     database.authenticate();
@@ -13,8 +12,6 @@ try {
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
-
-
 
 app.get('/', (req,res) => {
     res.json({
@@ -24,7 +21,7 @@ app.get('/', (req,res) => {
 })
 
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.SERVER_PORT || 3001;
 
 app.listen(PORT, () => {
     console.log("Server is up and running!" , PORT)
