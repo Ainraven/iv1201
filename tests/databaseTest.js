@@ -1,22 +1,16 @@
-import { Sequelize } from 'sequelize';
-import configData from '../integration/config/config.js';
 
-const env = process.env.NODE_ENV || 'development';
-const config = configData[env];
+const UserDAO = require('../integration/UserDAO.js'); 
+require('dotenv').config({path: `${process.cwd()}/.env`});
 
-export { Sequelize, config };
-const sequelize = new Sequelize(config);
- 
+const databaseConfigPath = '../integration/config/database.js'
+const database = require (databaseConfigPath);
 
-try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
+const userDAO = new UserDAO();
 
+userDAO.connectToDB()
+setTimeout(() => { 
+}, 1000);
 
-//const jane = sequelize.model.person.create({name: 'Jane'})
+userDAO.findPerson("JoelleWilkinson");  
+userDAO.findAllPersons();
 
-//const jane =  sequelize.models.person.findAll();
-//console.log(jane.toJSON());
