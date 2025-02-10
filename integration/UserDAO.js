@@ -13,20 +13,20 @@ class UserDAO {
         // Sequelize.useCLS(name);
         this.database = require (databaseConfigPath)
         const models = initModels(this.database);
-         this.Person = models.person;
+        this.Person = models.person;
     
     };
 
-     async connectToDB(){
-    try {
-        await this.database.authenticate();
-        console.log('Connection has been established successfully.');
-      } catch (error) {
-        console.error('Unable to connect to the database:', error);
-      }
+    async connectToDB(){
+        try {
+            await this.database.authenticate();
+            console.log('Connection has been established successfully.');
+        } catch (error) {
+            console.error('Unable to connect to the database:', error);
+        }
     }
 
-    async findPerson(username){
+    async findPersonByUsername(username){
         try{
              const person = await this.Person.findAll({
                 where: {username:username}

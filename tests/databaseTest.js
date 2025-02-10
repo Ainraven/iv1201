@@ -10,7 +10,7 @@ const userDAO = new UserDAO();
 //prints the selected row with username as param
 async function findPersonBasedOnUserName(){
 const username = "JoelleWilkinson";
-const person = userDAO.findPerson(username);  
+const person = await userDAO.findPersonByUsername(username);  
 console.log(username + ":" , JSON.stringify(person));
 }
 
@@ -31,7 +31,7 @@ setTimeout(() => {
     findAllPersonsTest()
     findPersonBasedOnUserName()
     findPersonBasedOnID();
-    }, 2500);
+  }, 2500);
 
 
 
