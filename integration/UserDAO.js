@@ -1,22 +1,32 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`});
 const { initModels } = require('../models/init-models');
-
+const cls = require('cls-hooked');
 
 const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize');
 
-
-
+/* 
+Class containing constructor for the DAO and its related methods. It is responsible for calls to the database.
+*/
 class UserDAO {
+
+/*
+Initializes the database based on the configurered sequelize instance from database.js
+*/
+
     constructor() {
-        // const name = cls.createNamespace('app-db');
-        // Sequelize.useCLS(name);
+        const name = cls.createNamespace('iv1201-db');
+        Sequelize.useCLS(name);
+        
         this.database = require (databaseConfigPath)
         const models = initModels(this.database);
         this.Person = models.person;
     
     };
 
+    /*
+    method used to confirm that a connection has been established
+    */ 
     async connectToDB(){
         try {
             await this.database.authenticate();
@@ -26,6 +36,9 @@ class UserDAO {
         }
     }
 
+    /*
+    Querries the database where @param username 
+    */ 
     async findPersonByUsername(username){
         try{
              const person = await this.Person.findAll({

@@ -1,17 +1,22 @@
 
 const UserDAO = require('../integration/UserDAO.js'); 
-require('dotenv').config({path: `${process.cwd()}/.env`});
-
-const databaseConfigPath = '../integration/config/database.js'
-const database = require (databaseConfigPath);
 
 const userDAO = new UserDAO();
+const database = userDAO.database;
 
 //prints the selected row with username as param
 async function findPersonBasedOnUserName(){
 const username = "JoelleWilkinson";
 const person = await userDAO.findPersonByUsername(username);  
 console.log(username + ":" , JSON.stringify(person));
+}
+
+async function transactionTest(){
+    return await database.transaction(async (t1) =>  
+        {const username = "JoelleWilkinson";
+        const person = await userDAO.findPersonByUsername(username);  
+        console.log(username + ":" , JSON.stringify(person));
+        });
 }
 
 //prints the first 10 people in the person table, change limit in /UserDAO.js
@@ -26,12 +31,12 @@ async function findPersonBasedOnID(){
     console.log("user with ID:" + ID + ":" , JSON.stringify(person))
 }
 
-userDAO.connectToDB()
-setTimeout(() => { 
-    findAllPersonsTest()
-    findPersonBasedOnUserName()
-    findPersonBasedOnID();
-  }, 2500);
+    userDAO.connectToDB().then(async () => {
+        await findAllPersonsTest();
+        await findPersonBasedOnUserName();
+        await findPersonBasedOnID();
+        await transactionTest();  
+    });
 
 
 
