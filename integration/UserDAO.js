@@ -1,11 +1,8 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`});
-const { initModels } = require('../models/init-models');
-
+const { initModels } = require('../models/init-models')
 
 const databaseConfigPath = './config/database.js'
-const Sequelize = require ('sequelize');
-
-
+const Sequelize = require ('sequelize')
 
 class UserDAO {
     constructor() {

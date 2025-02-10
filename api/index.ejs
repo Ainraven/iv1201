@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic HTML with JavaScript</title>
+
+    <script>
+        async function getUserById() {
+            //const controller = require('../controller/controller')
+            //const contr = new controller()
+            const userID = document.getElementById("userID").value
+            alert(userID)
+            //contr.getUserByID({id:userID})
+
+            const res = await fetch(`api/users/${userID}`)
+            //alert("response")
+            const data = await res.json()
+                .then(async data => {
+                    await printUser(data)
+                    console.log(data)
+                })
+            }
+            
+        async function printUser(data) {
+            document.getElementById("output").innerText = `data: ${data[0]}\nname: ${data.name} \nsurname: ${data.surname}`
+                
+        }
+    </script>
+</head>
+<body>
+    <h1>This is initial page</h1>
+    <div id="content">Input ID to find a person:</div>
+    <input id="userID" type="number"></input>
+    <button onclick="getUserById()" >Find!</button>
+    <p id="output">text</p>
+</body>
+</html>
