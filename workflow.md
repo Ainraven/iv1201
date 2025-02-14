@@ -57,6 +57,7 @@ For better understanding of different issues, pull-requests and commits, we use 
 Mutually exclusive and required, every issue should have exactly one of these labels.
 
 Labels:
+- A-everything: Related to the whole codebase
 - A-ci: Related to the CI/CD pipelines
 - A-backend: Related to the backend
 - A-frontend: Related to the frontend
