@@ -20,7 +20,6 @@ console.log(username + ":" , JSON.stringify(person));
     console.log('All users:', JSON.stringify(people, null, 2));
 }
 
-//prints the selected row with the ID as param
 async function findPersonBasedOnID(){
     const ID = 1;
     const person = await userDAO.findUserById(ID);
