@@ -2,18 +2,20 @@
 const UserDAO = require('../integration/UserDAO.js'); 
 
 const userDAO = new UserDAO();
-const database = userDAO.database;
+const database = userDAO.getDatabase();
 
-//prints the selected row with username as param
+/**
+ * Used to test method findPersonByUserName
+ */
 async function findPersonBasedOnUserName(){
-const username = "JoelleWilkinson";
-const person = await userDAO.findPersonByUsername(username);  
-console.log(username + ":" , JSON.stringify(person));
+    const username = "JoelleWilkinson";
+    const person = await userDAO.findPersonByUsername(username);  
+    console.log(username + ":" , JSON.stringify(person));
 }
 
 async function transactionTest(){
-    return await database.transaction(async (t1) =>  
-        {const username = "JoelleWilkinson";
+    return await database.transaction(async (t1) =>  { 
+        const username = "JoelleWilkinson";
         const person = await userDAO.findPersonByUsername(username);  
         console.log(username + ":" , JSON.stringify(person));
         });
@@ -35,7 +37,8 @@ async function findPersonBasedOnID(){
         await findAllPersonsTest();
         await findPersonBasedOnUserName();
         await findPersonBasedOnID();
-        await transactionTest();  
+        await transactionTest(); 
+        console.log(process.env.NODE_ENV); 
     });
 
 
