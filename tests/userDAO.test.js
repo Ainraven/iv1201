@@ -11,15 +11,20 @@ function createTestDB(){
       )
 }
 
+const person1 = {id:1, username:"abcdef", password:"fedcba", firstname:"John" , lastname:"Doe" , personalNumber : "00000420-1337", email : "john@finnsinte.se", role:2}
+
 
 describe('UserDAO Database Integration Tests', () => {
     let userDAO;
-    beforeEach( async () => {
-          userDAO = new UserDAO("test");
-        //  return await new Promise((resolve) => setTimeout(resolve, 1000))
+    beforeAll( () => {
+        userDAO = new  UserDAO("test")
     });
 
-    afterEach(async () => {
+    beforeEach(async () => {
+        await userDAO.person.destroy({ truncate: true, cascade: true });
+    })
+
+    afterAll(async () => {
         await userDAO.getDatabase().close();
     })
 
@@ -29,4 +34,16 @@ describe('UserDAO Database Integration Tests', () => {
         await expect(console.log).toHaveBeenCalledWith("Connection has been established successfully.")
        
     }); 
+
+    test('should successfully create and find user with id', async () => {
+        //await userDAO.createUser(person1)
+        await userDAO.createUser({id:2})
+        await userDAO.createUser({id:1})
+        const user = await userDAO.findUserById(1);
+
+        expect(user).not.toBeNull();
+        console.debug(user[0].person_id)
+        expect(user[0].person_id).toBe(1)
+     
+    })
 });

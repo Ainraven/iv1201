@@ -19,6 +19,7 @@ Initializes the database based on the configurered sequelize instance from datab
         Sequelize.useCLS(name);
 
         process.env.NODE_ENV = env || "development";
+
         this.database = require(databaseConfigPath)
         const models = initModels(this.database);
         this.person = models.person;
@@ -60,10 +61,9 @@ Initializes the database based on the configurered sequelize instance from datab
     */
     async findPersonByUsername(username){
         try{
-             const person = await this.Person.findAll({
+             const person = await this.person.findAll({
                 where: {username:username}
              })
-             //console.log(username + ":" , JSON.stringify(person))
              return person;
             }
             catch(err){
@@ -78,8 +78,7 @@ Initializes the database based on the configurered sequelize instance from datab
      */
     async findAllPersons(){
         try {
-            const people = await this.Person.findAll({limit:10}) //limit to 10 for now
-          //console.log('All users:', JSON.stringify(people, null, 2));
+            const people = await this.person.findAll({limit:10}) //limit to 10 for now
             return people;
             
         } catch (error) {
@@ -95,7 +94,7 @@ Initializes the database based on the configurered sequelize instance from datab
      */
     async findUserById(ID){
         try{
-            const person = await this.Person.findAll({
+            const person = await this.person.findAll({
                 where:{person_id:ID}
             })
             if (person.length === 0) { //If there is no matching person, it will return an empty array.
@@ -105,6 +104,35 @@ Initializes the database based on the configurered sequelize instance from datab
         }
         catch(error){
             console.log("Couldn't find user with ID" + ID)
+        }
+    }
+
+    async createUser(user){
+        try{    
+            const person = await this.person.create({
+                person_id : user.id,
+                username : user.username,
+                password : user.password,
+                name : user.firstname,
+                surname : user.lastname,
+                pnr : user.personalNumber,
+                email : user.email,
+                role_id : user.role
+                })
+             console.debug("ID for person is:" + person.id + " id for user is:"  + user.id)
+            return person;
+        }catch(error){
+            console.debug("Couldn't create user" + error)
+        }
+    }
+
+    async deleteUser(id){
+        try{
+            await this.person.destroy({
+                where: {person_id : id}
+            })
+        }catch(error){
+            console.log("Could not delete user" + error)
         }
     }
 }
