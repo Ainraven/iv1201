@@ -28,7 +28,7 @@ Follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.
 - `fix`: fixes a bug
 - `feat`: introduces a new feature
 - `test`: adds tests
-- `docs`: adds documentqation
+- `docs`: adds documentation
 - `refactor`: changes that neither fix a bug nor add a feature
 - `style`: changes that do not affect the meaning of the code (white spaces, formtting etc.)
 - `build`: changes that affect the build system or dependencies
