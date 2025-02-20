@@ -1,5 +1,5 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`});
-const { initModels } = require('../models/init-models')
+const { initModels } = require('../model/init-models')
 
 const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize')
