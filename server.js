@@ -28,8 +28,8 @@ app.get('/', (req,res) => {
 
 app.use('/api', contr.getRouter())
 
-const PORT = process.env.SERVER_PORT || 3001
+const PORT = process.env.SERVER_PORT || 3005
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log("Server is up and running!" , PORT)
 })
