@@ -119,7 +119,6 @@ Initializes the database based on the configurered sequelize instance from datab
                 email : user.email,
                 role_id : user.role
                 })
-             console.debug("ID for person is:" + person.id + " id for user is:"  + user.id)
             return person;
         }catch(error){
             console.debug("Couldn't create user" + error)
@@ -135,6 +134,15 @@ Initializes the database based on the configurered sequelize instance from datab
             console.log("Could not delete user" + error)
         }
     }
+
+    async showAllApplications(){
+        try{
+            const people = await this.person.findAll({
+                attributes: ['name', 'username'], where: {role_id :2}})
+            return people;
+        }catch{}
+    }
 }
+
 
 module.exports = UserDAO;
