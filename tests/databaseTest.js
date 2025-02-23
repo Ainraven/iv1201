@@ -1,7 +1,10 @@
 
 const UserDAO = require('../integration/UserDAO.js'); 
+const ApplicationDAO = require('../integration/ApplicationDAO.js'); 
 
+const applicationDAO = new ApplicationDAO();
 const userDAO = new UserDAO();
+
 const database = userDAO.getDatabase();
 
 /**
@@ -33,12 +36,26 @@ async function findPersonBasedOnID(){
     console.log("user with ID:" + ID + ":" , JSON.stringify(person))
 }
 
+async function createApplicationData(){
+    await applicationDAO.createApplication(12,false)
+}
+
+async function deleteAllApplications(){
+   await applicationDAO.deleteAllApplicationData();
+}
+
+async function viewAllApplications(){
+   const applications = await applicationDAO.showAllApplications() 
+   console.log('All applications:', JSON.stringify(applications, null, 2));
+}
+
     userDAO.connectToDB().then(async () => {
         await findAllPersonsTest();
         await findPersonBasedOnUserName();
         await findPersonBasedOnID();
         await transactionTest(); 
-        console.log(process.env.NODE_ENV); 
+       // await deleteAllApplications();
+        await viewAllApplications();
     });
 
 

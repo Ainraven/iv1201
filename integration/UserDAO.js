@@ -1,19 +1,20 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`});
-const { initModels } = require('../models/init-models');
+const { initModels } = require('../model/init-models');
 const cls = require('cls-hooked');
 
 const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize');
 
 /* 
-Class containing constructor for the DAO and its related methods. It is responsible for calls to the database.
+Class containing constructor for the DAO and its related methods pertaining to users. It is responsible for calls to the database.
 */
 class UserDAO {
 
-/*
-Initializes the database based on the configurered sequelize instance from database.js
-*/
-
+/** 
+ * Initializes the database based on the configurered sequelize instance from database.js
+ * @param {string} env is used to initialize the testing database by having "test" as paramater
+ * otherwise it defaults to the "regular" database
+ */
     constructor(env) {
         const name = cls.createNamespace('iv1201-db');
         Sequelize.useCLS(name);
@@ -32,12 +33,12 @@ Initializes the database based on the configurered sequelize instance from datab
         try {
             await this.database.authenticate();
             console.log('Connection has been established successfully.');
-           // await this.database.sync({alter:true, force:false});
             await this.database.models.role.sync();
             await this.database.models.person.sync();
             await this.database.models.competence.sync();
             await this.database.models.competence_profile.sync();
             await this.database.models.availability.sync();
+            await this.database.models.application.sync();
         
         } catch (error) {
             console.error('Unable to connect to the database:', error);
@@ -107,10 +108,16 @@ Initializes the database based on the configurered sequelize instance from datab
         }
     }
 
+    /** WIP
+     * 
+     * Method used to create a person in the person table.
+     * 
+     * @param {object} user: used to create  a user with different parameters 
+     * @returns a JSON with a person
+     */
     async createUser(user){
         try{    
             const person = await this.person.create({
-                person_id : user.id,
                 username : user.username,
                 password : user.password,
                 name : user.firstname,
@@ -125,6 +132,11 @@ Initializes the database based on the configurered sequelize instance from datab
         }
     }
 
+    /**
+     * Method used to delete a row from the person table. 
+     * 
+     * @param {int} id: the person ID that will be used to match with a person_id in the system 
+     */
     async deleteUser(id){
         try{
             await this.person.destroy({
@@ -135,13 +147,6 @@ Initializes the database based on the configurered sequelize instance from datab
         }
     }
 
-    async showAllApplications(){
-        try{
-            const people = await this.person.findAll({
-                attributes: ['name', 'username'], where: {role_id :2}})
-            return people;
-        }catch{}
-    }
 }
 
 
