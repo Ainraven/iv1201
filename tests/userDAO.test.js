@@ -1,17 +1,12 @@
-
-require('dotenv').config({path: `${process.cwd()}../.env`});
-
 const UserDAO = require('../integration/UserDAO.js'); 
 
-function createTestDB(){
-    execSync(
-        `PGPASSWORD=${process.env.DB_PASSWORD} psql -U ${process.env.DB_USERNAME} -h ${process.env.DB_HOST} -p ${process.env.DB_PORT} -c "CREATE DATABASE ${process.env.TEST_DB_NAME};"`,
-        { stdio: "ignore"}
-        
-      )
-}
-
-const person1 = {id:1, username:"abcdef", password:"fedcba", firstname:"John" , lastname:"Doe" , personalNumber : "00000420-1337", email : "john@finnsinte.se", role:2}
+const person1 = {username:"abcdef", 
+                password:"fedcba", 
+                firstname:"John" , 
+                lastname:"Doe" , 
+                personalNumber : "00000420-1337", 
+                email : "john@finnsinte.se", 
+                role:2}
 
 
 describe('UserDAO Database Integration Tests', () => {
@@ -36,14 +31,22 @@ describe('UserDAO Database Integration Tests', () => {
     }); 
 
     test('should successfully create and find user with id', async () => {
-        //await userDAO.createUser(person1)
-        await userDAO.createUser({id:2})
-        await userDAO.createUser({id:1})
+        await userDAO.createUser({firstname:"banana"})
         const user = await userDAO.findUserById(1);
 
         expect(user).not.toBeNull();
-        console.debug(user[0].person_id)
         expect(user[0].person_id).toBe(1)
-     
+    })
+
+    test('should successfully create and find user with a person object', async () => {
+        //await userDAO.createUser(person1)
+        await userDAO.createUser(person1);
+        console.debug(person1)
+
+        const user = await userDAO.findUserById(1);
+        console.debug(user)
+
+        expect(user).not.toBeNull();
+        expect(user[0].person_id).toBe(1)
     })
 });
