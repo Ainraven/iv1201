@@ -19,7 +19,7 @@ class UserDAO {
         const name = cls.createNamespace('iv1201-db');
         Sequelize.useCLS(name);
 
-        process.env.NODE_ENV = env || "development";
+        env = process.env.NODE_ENV || "development";
 
         this.database = require(databaseConfigPath)
         const models = initModels(this.database);
@@ -104,7 +104,7 @@ class UserDAO {
             return person;
         }
         catch(error){
-            console.log("Couldn't find user with ID" + ID)
+            console.log("Error in findUserByID: ", error)
         }
     }
 

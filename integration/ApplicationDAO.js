@@ -21,7 +21,7 @@ class ApplicationDAO{
         const name = cls.createNamespace('iv1201-db');
         Sequelize.useCLS(name);
 
-        process.env.NODE_ENV = env || "development";
+        env = process.env.NODE_ENV || "development";
 
         this.database = require(databaseConfigPath)
         const models = initModels(this.database);

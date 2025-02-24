@@ -7,29 +7,20 @@
 
     <script>
         async function getUserById() {
-            //const controller = require('../controller/controller')
-            //const contr = new controller()
             const userID = document.getElementById("userID").value
-            //alert(userID)
-            //contr.getUserByID({id:userID})
-
             const res = await fetch(`api/users/${userID}`)
-            //alert("response")
             const data = await res.json()
                 
             printUser(data)
         }
             
         async function printUser(data) {
-            //console.log("printing user: ", data)
-
             const user = Array.isArray(data) ? data[0] : data;
 
             document.getElementById("output").innerText = 
                 `data: ${JSON.stringify(user, null, 2)}\n
                 name: ${data[0].name} \n
                 surname: ${data[0].surname}`
-                
         }
     </script>
 </head>

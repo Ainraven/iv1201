@@ -2,6 +2,7 @@
   "dependencies": {
     "cls-hooked": "^4.2.2",
     "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
