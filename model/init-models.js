@@ -4,6 +4,7 @@ const _competence = require("./competence");
 const _competence_profile = require("./competence_profile");
 const _person = require("./person");
 const _role = require("./role");
+const _application = require("./application")
 
 function initModels(sequelize) {
   const availability = _availability(sequelize, DataTypes);
@@ -11,6 +12,7 @@ function initModels(sequelize) {
   const competence_profile = _competence_profile(sequelize, DataTypes);
   const person = _person(sequelize, DataTypes);
   const role = _role(sequelize, DataTypes);
+  const application = _application(sequelize, DataTypes);
 
   competence_profile.belongsTo(competence, { as: "competence", foreignKey: "competence_id"});
   competence.hasMany(competence_profile, { as: "competence_profiles", foreignKey: "competence_id"});
@@ -20,6 +22,7 @@ function initModels(sequelize) {
   person.hasMany(competence_profile, { as: "competence_profiles", foreignKey: "person_id"});
   person.belongsTo(role, { as: "role", foreignKey: "role_id"});
   role.hasMany(person, { as: "people", foreignKey: "role_id"});
+  application.belongsTo(person, { as: "person", foreignKey: "person_id"});
 
   return {
     availability,
@@ -27,6 +30,7 @@ function initModels(sequelize) {
     competence_profile,
     person,
     role,
+    application
   };
 }
 module.exports = initModels;

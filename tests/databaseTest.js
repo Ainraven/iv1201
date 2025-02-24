@@ -1,17 +1,27 @@
 
 const UserDAO = require('../integration/UserDAO.js'); 
-require('dotenv').config({path: `${process.cwd()}/.env`});
+const ApplicationDAO = require('../integration/ApplicationDAO.js'); 
 
-const databaseConfigPath = '../integration/config/database.js'
-const database = require (databaseConfigPath);
-
+const applicationDAO = new ApplicationDAO();
 const userDAO = new UserDAO();
 
-//prints the selected row with username as param
+const database = userDAO.getDatabase();
+
+/**
+ * Used to test method findPersonByUserName
+ */
 async function findPersonBasedOnUserName(){
-const username = "JoelleWilkinson";
-const person = userDAO.findPerson(username);  
-console.log(username + ":" , JSON.stringify(person));
+    const username = "JoelleWilkinson";
+    const person = await userDAO.findPersonByUsername(username);  
+    console.log(username + ":" , JSON.stringify(person));
+}
+
+async function transactionTest(){
+    return await database.transaction(async (t1) =>  { 
+        const username = "JoelleWilkinson";
+        const person = await userDAO.findPersonByUsername(username);  
+        console.log(username + ":" , JSON.stringify(person));
+        });
 }
 
 //prints the first 10 people in the person table, change limit in /UserDAO.js
@@ -26,12 +36,27 @@ async function findPersonBasedOnID(){
     console.log("user with ID:" + ID + ":" , JSON.stringify(person))
 }
 
-userDAO.connectToDB()
-setTimeout(() => { 
-    findAllPersonsTest()
-    findPersonBasedOnUserName()
-    findPersonBasedOnID();
-    }, 2500);
+async function createApplicationData(){
+    await applicationDAO.createApplication(12,false)
+}
+
+async function deleteAllApplications(){
+   await applicationDAO.deleteAllApplicationData();
+}
+
+async function viewAllApplications(){
+   const applications = await applicationDAO.showAllApplications() 
+   console.log('All applications:', JSON.stringify(applications, null, 2));
+}
+
+    userDAO.connectToDB().then(async () => {
+        await findAllPersonsTest();
+        await findPersonBasedOnUserName();
+        await findPersonBasedOnID();
+        await transactionTest(); 
+       // await deleteAllApplications();
+        await viewAllApplications();
+    });
 
 
 
