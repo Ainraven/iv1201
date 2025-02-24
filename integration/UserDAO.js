@@ -56,6 +56,7 @@ class UserDAO {
         }
         catch(error){
             console.log("Couldn't find user with ID" + ID)
+            console.log("Error in findUserByID: ", error)
         }
     }
 }
