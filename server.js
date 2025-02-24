@@ -4,9 +4,13 @@ const express = require('express')
 const app = express()
 const router = express.Router
 const controller = require('./controller/controller')
+const path = require('path')
 
 const contr = new controller()
 
+app.use(express.static(path.join(__dirname + '/api/public')))
+
+app.set('views', path.join(__dirname + '/api/views'))
 app.set('view engine', 'ejs')
 
 /**
@@ -23,10 +27,11 @@ try {
 */
 
 app.get('/', (req,res) => {
-    res.render('../api/index')
+    res.render('index')
 })
 
 app.use('/api', contr.getRouter())
+
 
 const PORT = process.env.SERVER_PORT || 3000
 
