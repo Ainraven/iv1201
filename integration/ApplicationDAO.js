@@ -76,7 +76,7 @@ class ApplicationDAO{
     }
 
     /**
-     * Method used to delete an application based on applicaiton ID
+     * Method used to delete an application based on application ID
      * 
      * @param {int} applicationID: used to specify which application to delete
      */
@@ -97,13 +97,14 @@ class ApplicationDAO{
      */
     async showAllApplications(){
         try{
-            const people = await this.application.findAll({
-                attributes: ['application_status'], // Column from the application table
+            const people = await this.application.findAll( { 
+                limit:10,
+                attributes: ['application_status', 'person_id'], // Column from the application table
                 include: [{
                   model: this.person,
                   as:"person",
                   attributes: ['name', 'surname'] // Columns from the person table
-                }]})
+                }] })
             return people;
         }catch(error){
             console.debug("couldn't show all applications " + error)

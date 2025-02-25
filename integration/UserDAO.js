@@ -79,10 +79,11 @@ class UserDAO {
      */
     async findAllPersons(){
         try {
+            console.log("findAllPersons here")
             const people = await this.person.findAll({limit:10}) //limit to 10 for now
             return people;
-            
-        } catch (error) {
+        } 
+        catch (error) {
             console.log("womp womp")
         }
     }
