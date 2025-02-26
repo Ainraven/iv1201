@@ -12,22 +12,18 @@ class UserDAO {
 
 /** 
  * Initializes the database based on the configurered sequelize instance from database.js
- * @param {string} env is used to initialize the testing database by having "test" as paramater
- * otherwise it defaults to the "regular" database
  */
-    constructor(env) {
-        const name = cls.createNamespace('iv1201-db');
-        Sequelize.useCLS(name);
-
-        env = process.env.NODE_ENV || "development";
+    constructor() {
+        const name = cls.createNamespace('iv1201-db')
+        Sequelize.useCLS(name)
 
         this.database = require(databaseConfigPath)
-        const models = initModels(this.database);
-        this.person = models.person;
+        const models = initModels(this.database)
+        this.person = models.person
     };
 
     /*
-    method used to confirm that a connection has been established
+    Method used to confirm that a connection has been established
     */ 
     async connectToDB(){
         try {
@@ -58,7 +54,7 @@ class UserDAO {
     * Method used to find a user in the person table based on their username.
     * 
     * @param {string} username: is the username used when logging in 
-    * @returns a json with the selected row in the person table
+    * @returns a JSON with the selected row in the person table
     */
     async findPersonByUsername(username){
         try{
@@ -75,7 +71,7 @@ class UserDAO {
     /**
      * Method used to find all people in the person table.
      * 
-     * @returns a json of the whole person table
+     * @returns a JSON of the whole person table
      */
     async findAllPersons(){
         try {
@@ -91,7 +87,7 @@ class UserDAO {
      * Method used to find a user in the person table based on their ID.
      * 
      * @param {number} ID: is used to match with the person_id in the person table 
-     * @returns a json with the selected row in the person table
+     * @returns a JSON with the selected row in the person table
      */
     async findUserById(ID){
         try{
@@ -108,8 +104,7 @@ class UserDAO {
         }
     }
 
-    /** WIP
-     * 
+    /** 
      * Method used to create a person in the person table.
      * 
      * @param {object} user: used to create  a user with different parameters 
