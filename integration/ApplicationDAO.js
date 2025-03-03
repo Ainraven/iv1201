@@ -40,7 +40,7 @@ class ApplicationDAO{
     * @param {int} personID: is used to match the application with a person 
     * @param {bool} status: is used to determine the status of the application
     * TRUE:accepted, FALSE: rejected, NULL:unhandled
-    * @returns a json with the application
+    * @returns a JSON with the application
     */
     async createApplication(personID, status){
         try{
@@ -60,14 +60,17 @@ class ApplicationDAO{
      * @param {int} personID: used to match an application in the system with the given personID
      * @param {bool} status: used to update the status of the application that was matched with the ID
      * TRUE:accepted, FALSE: rejected, NULL:unhandled
-     * @returns the number of rows that were updated.
+     * @returns a JSON of the updated row in the application table. This is stored in the 1st index
+     * which is why we return only that
      */
     async handleApplicationByPersonId(personID, status){
         try{
             const application = await this.application.update({application_status : status},
-                {where: {person_id :personID}}
+                {where: {person_id :personID},
+                returning:true      //used to return the updated row
+                }
             )
-            return application
+            return application[1]   
         }catch(error){console.debug("couldn't update application " + error)}
     }
 

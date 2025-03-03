@@ -73,9 +73,7 @@ describe('Application Database Integration Tests', () => {
         await expect(appBeforeChange).not.toBeNull()
         await expect(appBeforeChange.application_status).toBe(null)
 
-        await applicationDAO.handleApplicationByPersonId(user.person_id, true)
-        const app = await applicationDAO.findApplicationByApplicationId(appBeforeChange.application_id)
-
+        const app = await applicationDAO.handleApplicationByPersonId(user.person_id, true)
         await expect(app[0].application_status).not.toBe(appBeforeChange.application_status)
         await expect(app[0].application_status).toEqual(true)
     })
