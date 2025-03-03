@@ -115,7 +115,7 @@ class ApplicationDAO{
      */
     async findApplicationByApplicationId(applicationID){
         try{
-            const application = this.application.findAll({
+            const application = await this.application.findAll({
                 where:{application_id :applicationID}})
             return application
         }catch(error){
