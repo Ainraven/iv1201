@@ -61,7 +61,6 @@ async function getAllApplications() {
     }
 }
 async function showApplications(data) {
-    console.log("Showing all applications...")
     var list = document.getElementById("applications")
     for(const application of data){
         var entry = document.createElement('tr')
@@ -87,14 +86,14 @@ async function showApplications(data) {
         var acceptTd = document.createElement('td')
         var acceptBtn = document.createElement('button')
         acceptBtn.appendChild(document.createTextNode("Accept"))
-        acceptBtn.setAttribute("onclick", `acceptFun(${application.person_id})`)
+        acceptBtn.setAttribute("onclick", `acceptFun(${application.application_id})`)
         acceptTd.appendChild(acceptBtn)
         entry.appendChild(acceptTd)
         
         var rejectTd = document.createElement('td')
         var rejectBtn = document.createElement('button')
         rejectBtn.appendChild(document.createTextNode("Reject"))
-        rejectBtn.setAttribute("onclick", `rejectFun(${application.person_id})`)
+        rejectBtn.setAttribute("onclick", `rejectFun(${application.application_id})`)
         rejectTd.appendChild(rejectBtn)
         entry.appendChild(rejectTd)
 
@@ -103,15 +102,12 @@ async function showApplications(data) {
 }
 
 async function acceptFun(id) {
-    // console.log("this is applicant", id)
     try {
-        // contr.acceptApplication(id)
-        const res = await fetch(`api/applications/${id}`)
+        const res = await fetch(`api/applications/accept/${id}`)
         if(!res.ok) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).textContent = "True"
     }
     catch (error) {
         console.error(`Error in getAllAplications();`, error)
@@ -119,13 +115,11 @@ async function acceptFun(id) {
 }
 async function rejectFun(id) {
     try {
-        // contr.acceptApplication(id)
-        const res = await fetch(`api/applications/${id}`)
+        const res = await fetch(`api/applications/reject/${id}`)
         if(!res.ok) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).textContent = "False"
     }
     catch (error) {
         console.error(`Error in getAllAplications();`, error)

@@ -56,7 +56,7 @@ async function viewAllApplications(){
         await transactionTest()
        // await deleteAllApplications();
         await viewAllApplications()
-        await applicationDAO.createUnhandledApplicationsForExistingApplicants()
+        // await applicationDAO.createUnhandledApplicationsForExistingApplicants()
     });
 
 

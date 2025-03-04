@@ -13,10 +13,12 @@ class Controller {
         this.getAllUsers = this.getAllUsers.bind(this)
         this.getAllApplications = this.getAllApplications.bind(this)
         this.acceptApplication = this.acceptApplication.bind(this)
+        this.rejectApplication = this.rejectApplication.bind(this)
         this.router.get('/users/:id', this.getUserByID)
         this.router.get('/users', this.getAllUsers)
         this.router.get('/applications', this.getAllApplications)
-        this.router.get(`/applications/:id`, this.acceptApplication)
+        this.router.get(`/applications/accept/:id`, this.acceptApplication)
+        this.router.get(`/applications/reject/:id`, this.rejectApplication)
     }
 
     async getUserByID(req, res) {
@@ -55,15 +57,25 @@ class Controller {
 
     async acceptApplication(req, res) {
         try{
-            // console.log("THIS IS REQUEST: ", req)
-            const accepted = await this.applicationDAO.handleApplicationByPersonId(req.params.id, true)
+            const accepted = await this.applicationDAO.handleApplicationById(req.params.id, true)
             if(!accepted) return res.status(404).json({message: "Applications not found"})
-            res.json(accepted)
+                res.json(accepted)
         }
         catch (error) {
             res.status(500).json({message: error.message})
         }
     }
+    async rejectApplication(req, res) {
+        try{
+            const rejected = await this.applicationDAO.handleApplicationById(req.params.id, false)
+            if(!rejected) return res.status(404).json({message: "Applications not found"})
+            res.json(rejected)
+        }
+        catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    }
+
 
     getRouter() {
         return this.router
