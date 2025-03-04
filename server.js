@@ -27,7 +27,10 @@ try {
 */
 
 app.get('/', (req,res) => {
-    res.render('index')
+  res.render('index')
+})
+app.get('/applications', (req,res) => {
+  res.render('applications')
 })
 
 app.use('/api', contr.getRouter())

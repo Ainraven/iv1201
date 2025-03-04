@@ -59,7 +59,7 @@ class Controller {
         try{
             const accepted = await this.applicationDAO.handleApplicationById(req.params.id, true)
             if(!accepted) return res.status(404).json({message: "Applications not found"})
-                res.json(accepted)
+            res.json(accepted)
         }
         catch (error) {
             res.status(500).json({message: error.message})
@@ -67,7 +67,7 @@ class Controller {
     }
     async rejectApplication(req, res) {
         try{
-            const rejected = await this.applicationDAO.handleApplicationById(req.params.id, false)
+            const rejected = await this.applicationDAO.handleApplicationBy<Id(req.params.id, false)
             if(!rejected) return res.status(404).json({message: "Applications not found"})
             res.json(rejected)
         }

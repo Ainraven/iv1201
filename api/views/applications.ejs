@@ -4,34 +4,19 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Amusement Park</title>
+        <title>Applications</title>
         <link rel="stylesheet" href="/css/style.css">
+        <script src="/js/applicationsView.js"></script>
     </head>
 
     <body>
         <h1>Amusement Park "Heh"</h1>
-        <header>
-            <div id="logo">LOGO</div>
-            <ul>
-                <li>Point 1</li>
-                <li>Applications</li>
-                <li>Log In / Sign in</li>
-            </ul>
-        </header>
-        
-        <h2>Find a person</h2>
-        <div id="content">Input ID to find a person:</div>
-        <input id="userID" type="number">
-        <button onclick="getUserById()">Find!</button>
-        <p id="output">text</p>
-        <!--
-        -->
         
         <h2>Applications</h2>
         <button onclick="getAllApplications()">Show all applications</button>
         
         
-        <table id="applications">
+        <table id="applications" onload="getAllApplications()">
             <tr>
                 <th>Name</th>
                 <th>Surname</th>
@@ -42,8 +27,6 @@
             
         </table>
 
-        <script src="/js/script.js"></script>
-        <script src="/js/applicationsView.js"></script>
     </body>
 
 </html>
