@@ -56,7 +56,6 @@ class Controller {
     async acceptApplication(req, res) {
         try{
             // console.log("THIS IS REQUEST: ", req)
-
             const accepted = await this.applicationDAO.handleApplicationByPersonId(req.params.id, true)
             if(!accepted) return res.status(404).json({message: "Applications not found"})
             res.json(accepted)

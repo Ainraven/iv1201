@@ -91,7 +91,6 @@ async function showApplications(data) {
         acceptTd.appendChild(acceptBtn)
         entry.appendChild(acceptTd)
         
-
         var rejectTd = document.createElement('td')
         var rejectBtn = document.createElement('button')
         rejectBtn.appendChild(document.createTextNode("Reject"))
