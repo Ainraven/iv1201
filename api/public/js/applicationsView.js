@@ -1,7 +1,6 @@
 /**
  * Fetches applications from api/applications
  * Calls for showApplications to display them for the user
- * 
  */
 async function getApplications() {
     try {
@@ -13,7 +12,7 @@ async function getApplications() {
         showApplications(data)
     }
     catch (error) {
-        console.error(`Error in getAllAplications();`, error)
+        console.error(`Error in getAplications();`, error)
     }
 }
 
@@ -26,12 +25,12 @@ async function showApplications(data) {
     for(const application of data){
         var entry = document.createElement('tr')
         entry.setAttribute("class", "applicationItem")
-        entry.setAttribute("id", `application${application.person_id}`)
+        entry.setAttribute("id", `application${application.application_id}`)
 
         var name = document.createElement('td')
         var surname = document.createElement('td')
         var status = document.createElement('td')
-        status.setAttribute("id", `status-application${application.person_id}`)
+        status.setAttribute("id", `status-application${application.application_id}`)
 
         name.appendChild(document.createTextNode(
             `${JSON.stringify(application.person.name, null, 2).replace(/\"/g, "")}`))
@@ -47,16 +46,23 @@ async function showApplications(data) {
         var acceptTd = document.createElement('td')
         var acceptBtn = document.createElement('button')
         acceptBtn.appendChild(document.createTextNode("Accept"))
-        acceptBtn.setAttribute("onclick", `acceptFun(${application.application_id})`)
+        acceptBtn.setAttribute("onclick", `acceptApplication(${application.application_id})`)
         acceptTd.appendChild(acceptBtn)
         entry.appendChild(acceptTd)
         
         var rejectTd = document.createElement('td')
         var rejectBtn = document.createElement('button')
         rejectBtn.appendChild(document.createTextNode("Reject"))
-        rejectBtn.setAttribute("onclick", `rejectFun(${application.application_id})`)
+        rejectBtn.setAttribute("onclick", `rejectApplication(${application.application_id})`)
         rejectTd.appendChild(rejectBtn)
         entry.appendChild(rejectTd)
+
+        var pendingTd = document.createElement('td')
+        var pendingBtn = document.createElement('button')
+        pendingBtn.appendChild(document.createTextNode("Pending"))
+        pendingBtn.setAttribute("onclick", `pendingApplication(${application.application_id})`)
+        pendingTd.appendChild(pendingBtn)
+        entry.appendChild(pendingTd)
 
         list.appendChild(entry)
     }
@@ -66,16 +72,17 @@ async function showApplications(data) {
  * Changes application status of {id} to accepted state and displays the changes
  * @param {number} id 
  */
-async function acceptFun(id) {
+async function acceptApplication(id) {
     try {
         const res = await fetch(`api/applications/accept/${id}`)
         if(!res.ok) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
+        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status}`
     }
     catch (error) {
-        console.error(`Error in getAllAplications();`, error)
+        console.error(`Error in acceptApplication();`, error)
     }
 }
 
@@ -83,15 +90,34 @@ async function acceptFun(id) {
  * Changes application status of {id} to rejected state and displays the changes
  * @param {number} id 
  */
-async function rejectFun(id) {
+async function rejectApplication(id) {
     try {
         const res = await fetch(`api/applications/reject/${id}`)
         if(!res.ok) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
+        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status}`
     }
     catch (error) {
-        console.error(`Error in getAllAplications();`, error)
+        console.error(`Error in rejectApplication();`, error)
+    }
+}
+
+/**
+ * Changes application status of {id} to pending state and displays the changes
+ * @param {number} id 
+ */
+async function pendingApplication(id) {
+    try {
+        const res = await fetch(`api/applications/pending/${id}`)
+        if(!res.ok) {
+            throw new Error(`API error`, res.status)
+        }
+        const data = await res.json()
+        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status}`
+    }
+    catch (error) {
+        console.error(`Error in pendingApplication();`, error)
     }
 }
