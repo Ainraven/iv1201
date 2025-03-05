@@ -1,6 +1,7 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`})
 const { initModels } = require('../model/init-models')
 const cls = require('cls-hooked')
+const bcrypt = require('bcrypt')
 
 const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize')
@@ -58,7 +59,7 @@ class UserDAO {
     */
     async findPersonByUsername(username){
         try{
-             const person = await this.person.findAll({
+             const person = await this.person.findOne({
                 where: {username:username}
              })
              return person
@@ -141,23 +142,49 @@ class UserDAO {
             console.log("Could not delete user" + error)
         }
     }
+
+    /**
+     * Method to compare given password with hashed password in database
+     * 
+     * @param {*} user 
+     * @param {*} password 
+     * @returns 
+     */
+    async checkPassword(user, password) {
+        if (!user || !user.password) return false
+        const passwordIsHashedPassword = await bcrypt.compare(password, user.password)
+        return passwordIsHashedPassword
+        }
+
     /**
      * A method that is used to find a user based on a username and password, i.e logging the user in.
      * If no user is found, then that user does not exist in the database and need to create an account.
      * 
      * @param {String} userUsername: is the username which the user is trying to log in with 
      * @param {String} userPassword: is the password which the user is trying to log in with
-     * @returns a JSON with the found person. Returns an empty array otherwise
+     * @returns a JSON with the found person. Returns an null otherwise
      */
     async loginUser(userUsername, userPassword){
         try{
-            const person = await this.person.findAll({
-                where:{username:userUsername, password:userPassword}
-            })
-            if(person.length === 0){
-                console.log("There is no user with that password or username")
+           const person = await this.findPersonByUsername(userUsername)
+            
+            //person will be an null if no user is found
+            if(!person){
+                console.log("No user found with that username")
+                return null
             }
-            return person 
+
+            const isValidPassword = await this.checkPassword(person, userPassword)
+
+            if(isValidPassword){
+                console.log("Log in success")
+                return person
+            }
+            else {
+                console.log("Incorrect password")
+                return null
+            }
+        
         }
         catch(error){
             console.debug("loginUser Failed" + error)
