@@ -63,10 +63,10 @@ class ApplicationDAO{
      * @returns a JSON of the updated row in the application table. This is stored in the 1st index
      * which is why we return only that
      */
-    async handleApplicationByPersonId(personID, status){
+    async handleApplicationById(applicationID, status){
         try{
-            const application = await this.application.update({application_status : status},
-                {where: {person_id :personID},
+            const application = await this.application.update({application_status: status},
+                {where: {application_id: applicationID},
                 returning:true      //used to return the updated row
                 }
             )
@@ -75,6 +75,7 @@ class ApplicationDAO{
     }
 
     /**
+     * Method used to delete an application based on application ID
      * Method used to delete an application based on application ID
      * 
      * @param {int} applicationID: used to specify which application to delete
@@ -96,14 +97,18 @@ class ApplicationDAO{
      */
     async showAllApplications(){
         try{
-            const people = await this.application.findAll({
-                attributes: ['application_status'], // Column from the application table
+            const people = await this.application.findAll( { 
+                limit:10,
                 include: [{
                   model: this.person,
                   as:"person",
                   attributes: ['name', 'surname'] // Columns from the person table
-                }]})
-            return people 
+                }],
+                order: [
+                    ['application_id', 'ASC']
+                ]
+            })
+            return people;
         }catch(error){
             console.debug("couldn't show all applications " + error)
         }
