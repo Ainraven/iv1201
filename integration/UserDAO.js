@@ -141,6 +141,28 @@ class UserDAO {
             console.log("Could not delete user" + error)
         }
     }
+    /**
+     * A method that is used to find a user based on a username and password, i.e logging the user in.
+     * If no user is found, then that user does not exist in the database and need to create an account.
+     * 
+     * @param {String} userUsername: is the username which the user is trying to log in with 
+     * @param {String} userPassword: is the password which the user is trying to log in with
+     * @returns a JSON with the found person. Returns an empty array otherwise
+     */
+    async loginUser(userUsername, userPassword){
+        try{
+            const person = await this.person.findAll({
+                where:{username:userUsername, password:userPassword}
+            })
+            if(person.length === 0){
+                console.log("There is no user with that password or username")
+            }
+            return person 
+        }
+        catch(error){
+            console.debug("loginUser Failed" + error)
+        }
+    }
 
 }
 
