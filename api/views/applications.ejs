@@ -9,14 +9,12 @@
         <script src="/js/applicationsView.js"></script>
     </head>
 
-    <body>
+    <body onload="getAllApplications()">
         <h1>Amusement Park "Heh"</h1>
         
         <h2>Applications</h2>
-        <button onclick="getAllApplications()">Show all applications</button>
         
-        
-        <table id="applications" onload="getAllApplications()">
+        <table id="applications">
             <tr>
                 <th>Name</th>
                 <th>Surname</th>
@@ -24,7 +22,6 @@
                 <th>Accept</th>
                 <th>Reject</th>
             </tr>
-            
         </table>
 
     </body>

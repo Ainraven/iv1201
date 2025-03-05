@@ -103,7 +103,11 @@ class ApplicationDAO{
                   model: this.person,
                   as:"person",
                   attributes: ['name', 'surname'] // Columns from the person table
-                }]})
+                }],
+                order: [
+                    ['application_id', 'ASC']
+                ]
+            })
             return people;
         }catch(error){
             console.debug("couldn't show all applications " + error)
