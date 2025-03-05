@@ -41,8 +41,8 @@ describe('UserDAO Database Integration Tests', () => {
        
     })
 
-    test('should successfully create user with name', async () => {
-        const user = await userDAO.createUser({username:"banana"})
+    test('should successfully create user with an username and password', async () => {
+        const user = await userDAO.createUser({username:"banana", password:"hejhej"})
 
         await expect(user).not.toBeNull()
         await expect(user.username).toBe("banana")
@@ -64,25 +64,35 @@ describe('UserDAO Database Integration Tests', () => {
     })
 
     test('should login a user from the database', async() => {
+        console.log = jest.fn() // Capture console output
         const user = await userDAO.createUser(person1)
         const loggedInUser = await userDAO.loginUser(person1.username, person1.password)
 
+        await expect(console.log).toHaveBeenCalledWith("Log in success")
         await expect(loggedInUser).not.toBeNull()
-        await expect(loggedInUser[0].person_id).toBe(user.person_id)
-        await expect(loggedInUser[0].username).toBe(user.username)
-        await expect(loggedInUser[0].password).toBe(user.password)
+        await expect(loggedInUser.person_id).toBe(user.person_id)
+        await expect(loggedInUser.username).toBe(user.username)
+        await expect(loggedInUser.password).toBe(user.password)
     })
 
-    test('should fail to login a user, as user is not in database', async() => {
+    test('should fail to login a user, with wrong username', async() => {
         console.log = jest.fn() // Capture console output
-        const user = await userDAO.createUser(person2)
+        await userDAO.createUser(person2)
         const loggedInUser = await userDAO.loginUser(person1.username, person1.password)
 
-        await expect(console.log).toHaveBeenCalledWith("There is no user with that password or username")
-        await expect(loggedInUser).toStrictEqual([])
-        await expect(loggedInUser.person_id).not.toBe(user.person_id)
-        await expect(loggedInUser.username).not.toBe(user.username)
-        await expect(loggedInUser.password).not.toBe(user.password)
+        await expect(console.log).toHaveBeenCalledWith("No user found with that username")
+        await expect(loggedInUser).toBeNull()
+    })
+
+    test('should fail to login a user, with wrong password', async() => {
+        console.log = jest.fn() // Capture console output
+        await userDAO.createUser(person1)
+        const loggedInUser = await userDAO.loginUser(person1.username, "wrongPassword")
+
+
+        await expect(console.log).toHaveBeenCalledWith("Incorrect password")
+        await expect(loggedInUser).toBeNull()
+
     })
     
 })
