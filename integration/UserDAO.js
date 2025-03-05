@@ -146,9 +146,9 @@ class UserDAO {
     /**
      * Method to compare given password with hashed password in database
      * 
-     * @param {*} user 
-     * @param {*} password 
-     * @returns 
+     * @param {*} user is a user derived from the database which has the hashed password
+     * @param {*} password is the "actuall" plaintext password used to compare with the hashed one
+     * @returns a boolean that returns true if both passwords correspond to each other, otherwise false.
      */
     async checkPassword(user, password) {
         if (!user || !user.password) return false
@@ -162,7 +162,7 @@ class UserDAO {
      * 
      * @param {String} userUsername: is the username which the user is trying to log in with 
      * @param {String} userPassword: is the password which the user is trying to log in with
-     * @returns a JSON with the found person. Returns an null otherwise
+     * @returns a JSON with the found person. Returns null otherwise
      */
     async loginUser(userUsername, userPassword){
         try{
