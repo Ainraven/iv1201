@@ -76,7 +76,6 @@ class Controller {
         }
     }
 
-
     getRouter() {
         return this.router
     }

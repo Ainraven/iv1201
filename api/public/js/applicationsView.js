@@ -1,4 +1,9 @@
-async function getAllApplications() {
+/**
+ * Fetches applications from api/applications
+ * Calls for showApplications to display them for the user
+ * 
+ */
+async function getApplications() {
     try {
         const res = await fetch(`api/applications`)
         if(!res.ok) {
@@ -11,6 +16,11 @@ async function getAllApplications() {
         console.error(`Error in getAllAplications();`, error)
     }
 }
+
+/**
+ * Displays applications from "data" in a table
+ * @param {json} data json file with applications
+ */
 async function showApplications(data) {
     var list = document.getElementById("applications")
     for(const application of data){
@@ -52,6 +62,10 @@ async function showApplications(data) {
     }
 }
 
+/**
+ * Changes application status of {id} to accepted state and displays the changes
+ * @param {number} id 
+ */
 async function acceptFun(id) {
     try {
         const res = await fetch(`api/applications/accept/${id}`)
@@ -64,6 +78,11 @@ async function acceptFun(id) {
         console.error(`Error in getAllAplications();`, error)
     }
 }
+
+/**
+ * Changes application status of {id} to rejected state and displays the changes
+ * @param {number} id 
+ */
 async function rejectFun(id) {
     try {
         const res = await fetch(`api/applications/reject/${id}`)
