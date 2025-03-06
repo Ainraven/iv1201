@@ -187,6 +187,7 @@ class UserDAO {
     async loginUser(userUsername, userPassword){
         try{
            const person = await this.findPersonByUsername(userUsername)
+           console.log(person)
             
             //person will be an null if no user is found
             if(!person){
@@ -195,6 +196,9 @@ class UserDAO {
             }
 
             const isValidPassword = await this.checkPassword(person, userPassword)
+            console.log(person.password)
+            console.log(userPassword)
+            console.log(isValidPassword)
 
             if(isValidPassword){
                 console.log("Log in success")
@@ -210,6 +214,39 @@ class UserDAO {
             console.debug("loginUser Failed" + error)
         }
     }
+
+
+
+
+async encryptExistingPasswords() {
+    const usersToUpdate = [
+        { person_id: 1, password: 'LiZ98qvL8Lw' },
+        { person_id: 2, password: 'QkK48drV2Da' },
+        { person_id: 3, password: 'EyD84euX5Nj' },
+        { person_id: 4, password: 'VdE34mqY2Xy' },
+        { person_id: 5, password: 'NmK87boS4Lf' },
+        { person_id: 6, password: 'LqK20ygU3Lw' },
+        { person_id: 7, password: 'OjP41mkY3Vb' },
+        { person_id: 8, password: 'LbH38urF4Kn' },
+        { person_id: 9, password: 'XoH15hnY3Bw' },
+        { person_id: 10, password: 'MvZ46kfC1Kr' }
+    ]
+    try {
+        for (let user of usersToUpdate) {
+             const hashedPassword = await bcrypt.hash(user.password, 10); // Hash the password
+            await this.person.update(
+                { password: hashedPassword },  // Update with hashed password
+                { where: { person_id: user.person_id } } // Target specific user
+            );
+
+            console.log(`Updated password for person_id: ${user.person_id}`);
+        }
+
+        console.log('Password update complete.');
+    } catch (error) {
+        console.error('Error updating passwords:', error);
+    }
+  }
 
 }
 
