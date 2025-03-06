@@ -76,7 +76,6 @@ class ApplicationDAO{
 
     /**
      * Method used to delete an application based on application ID
-     * Method used to delete an application based on application ID
      * 
      * @param {int} applicationID: used to specify which application to delete
      */
