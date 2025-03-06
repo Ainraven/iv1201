@@ -2,11 +2,15 @@ require('dotenv').config({path: `${process.cwd()}/.env`})
 
 const express = require('express')
 const app = express()
-const router = express.Router
-const controller = require('./controller/controller')
+const router = express.Router()
+const Controller = require('./controller/controller')
+const path = require('path')
 
-const contr = new controller()
+const contr = new Controller()
 
+app.use(express.static(path.join(__dirname + '/api/public')))
+
+app.set('views', path.join(__dirname + '/api/views'))
 app.set('view engine', 'ejs')
 
 /**
@@ -23,10 +27,16 @@ try {
 */
 
 app.get('/', (req,res) => {
-    res.render('../api/index')
+    res.render('index')
 })
 
+app.get('/login', (req,res) => {
+  res.render('loginView')
+})
 app.use('/api', contr.getRouter())
+
+app.use(express.json())
+app.use("/api/auth", require("./routes/auth"))
 
 const PORT = process.env.SERVER_PORT || 3000
 

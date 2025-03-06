@@ -1,0 +1,19 @@
+body {
+    background-color: blanchedalmond;
+}
+
+#logo {
+    size: 5vw;
+}
+
+#applications {
+
+}
+applicationItem {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.applicationItem td, th{
+    margin: 5vw 0; 
+}

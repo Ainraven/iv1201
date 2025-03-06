@@ -62,6 +62,25 @@ class UserDAO {
              const person = await this.person.findOne({
                 where: {username:username}
              })
+             console.log(person)
+             return person;
+            }
+            catch(err){
+                console.log("failed to find person", err)
+        }
+    }
+
+    /**
+    * Method used to find a user in the person table based on their email.
+    * 
+    * @param {string} email: is the email used when logging in 
+    * @returns a json with the selected row in the person table
+    */
+    async findPersonByEmail(email){
+        try{
+             const person = await this.person.findAll({
+                where: {email:email}
+             })
              return person
             }
             catch(err){
@@ -76,6 +95,7 @@ class UserDAO {
      */
     async findAllPersons(){
         try {
+            console.log("findAllPersons here")
             const people = await this.person.findAll({limit:10}) //limit to 10 for now
             return people
             
