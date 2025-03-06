@@ -96,8 +96,9 @@ class ApplicationDAO{
      */
     async showAllApplications(){
         try{
-            const people = await this.application.findAll({
-                attributes: ['application_status'], // Column from the application table
+            const people = await this.application.findAll( { 
+                limit:10,
+                attributes: ['application_status', 'person_id'], // Column from the application table
                 include: [{
                   model: this.person,
                   as:"person",
