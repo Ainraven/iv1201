@@ -3,11 +3,13 @@
  * @returns 
  */
 async function loginUser() {
-    const username = document.getElementById("username").value
+    const loginHandle = document.getElementById("loginHandle").value
     const password = document.getElementById("password").value
 
-    if(!username || !password) {
-        alert("Please enter both username and password.")
+    console.log()
+
+    if(!loginHandle || !password) {
+        alert("Please enter both username/email and password.")
     }
 
     try {
@@ -16,7 +18,7 @@ async function loginUser() {
             headers: {
                 "Content-Type": "application/json" 
             },
-            body: JSON.stringify({username, password})
+            body: JSON.stringify({loginHandle, password})
         })
 
         if(!res.ok){
@@ -24,7 +26,7 @@ async function loginUser() {
         }
 
         const data = await res.json()
-        console.log(data.access)
+
         if(!data.access) {
             alert("Wrong password or username!")
         }

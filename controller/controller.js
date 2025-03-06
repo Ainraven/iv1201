@@ -70,9 +70,20 @@ class Controller {
 
     async login(req, res) {
         try {
-            const {username, password} = req.body
+            const {loginHandle, password} = req.body
+        
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            const isValidEmail = pattern.test(loginHandle)
 
-            const user = await this.userDAO.findPersonByUsername(username)
+            var user
+
+            if(isValidEmail){
+                user = await this.userDAO.findPersonByEmail(loginHandle)
+            }
+            else{
+                user = await this.userDAO.findPersonByUsername(loginHandle)
+            }
+
             if(!user) {
                 return res.status(404).json({message: "User not found"})
             }

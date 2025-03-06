@@ -14,7 +14,7 @@ body {
     height: 40vh;
 }
 
-#username {
+#loginHandle {
     width: 70vh;
     padding-top: 5px;
     padding-bottom: 3px;
@@ -51,6 +51,7 @@ body {
     background-color: rgb(89, 103, 115);
     border-width: 2px;
     border-color: whitesmoke;
+    cursor: pointer;
 }
 
 #forgotten-password-button {
@@ -64,4 +65,5 @@ body {
     background-color: rgb(89, 103, 115);
     border-width: 2px;
     border-color: whitesmoke;
+    cursor:pointer;
 }
