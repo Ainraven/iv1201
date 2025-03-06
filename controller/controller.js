@@ -72,28 +72,17 @@ class Controller {
         try {
             const {loginHandle, password} = req.body
         
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            const isValidEmail = pattern.test(loginHandle)
+        // const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        // const isValidEmail = pattern.test(loginHandle)
 
-            var user
-
-            if(isValidEmail){
-                user = await this.userDAO.findPersonByEmail(loginHandle)
-            }
-            else{
-                user = await this.userDAO.findPersonByUsername(loginHandle)
-            }
+            const user = await this.userDAO.loginUser(loginHandle, password)
 
             if(!user) {
                 return res.status(404).json({message: "User not found"})
             }
 
-            if(password === user[0].password){
-                res.json({access: true})
-            }
-            else {
-                res.json({access: false})
-            }
+            console.log(user)
+            res.json(user)
         }
         catch (error) {
             res.status(500).json({message: error.message})

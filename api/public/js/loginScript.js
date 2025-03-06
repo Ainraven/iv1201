@@ -21,15 +21,19 @@ async function loginUser() {
             body: JSON.stringify({loginHandle, password})
         })
 
+        console.log("here")
+        console.log(res)
+
         if(!res.ok){
             throw new Error(`Login failed: ${res.status}`)
         }
 
         const data = await res.json()
-
-        if(!data.access) {
+        
+        if(!data) {
             alert("Wrong password or username!")
         }
+        window.location.replace("/")
     } 
     catch(error) {
         console.error(`Error in loginUser()`, error)
