@@ -38,7 +38,7 @@ app.get('/login', (req,res) => {
 app.use('/api', contr.getRouter())
 
 app.use(express.json())
-app.use("/api/auth", require("./routes/auth"))
+app.use("/api/auth", require("./routes/authRoutes"))
 
 const PORT = process.env.SERVER_PORT || 3000
 
