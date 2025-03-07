@@ -25,8 +25,9 @@
 /**
  * Fetches applications from api/applications
  * Calls for showApplications to display them for the user
- */
+*/
 async function getApplications() {
+    
     try {
         const token = localStorage.getItem("token")
         console.log("This is token from getApplications: ", token)
@@ -46,6 +47,9 @@ async function getApplications() {
         if(!res.ok) {
             throw new Error(`API error`, res.status)
         }
+        console.log("RESPONSE: ", res.status)
+
+
         const data = await res.json()
         showApplications(data)
     }

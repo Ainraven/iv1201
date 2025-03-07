@@ -3,6 +3,7 @@ const UserDAO = require('../integration/UserDAO')
 const ApplicationDAO = require('../integration/ApplicationDAO')
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const authenticateToken = require('../middleware/authorisationMiddle')
 
 class Controller {
     
@@ -19,7 +20,7 @@ class Controller {
         this.login = this.login.bind(this)
         this.router.get('/users/:id', this.getUserByID)
         this.router.get('/users', this.getAllUsers)
-        this.router.get('/applications/api', this.getApplications)
+        this.router.get('/applications/api', authenticateToken, this.getApplications)
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
         this.router.get(`/applications/pending/:id`, this.pendingApplication)
@@ -51,6 +52,10 @@ class Controller {
 
     async getApplications(req, res) {
         try {
+            console.log("This is role: ", req.user.role)
+            if (req.user.role !== 1) {
+                return res.status(403).json({ message: "Access Denied" })
+            }
             const applications = await this.applicationDAO.showAllApplications()
             if(!applications) return res.status(404).json({message: "Applications not found"})
             res.json(applications)
