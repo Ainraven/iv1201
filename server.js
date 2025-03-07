@@ -30,9 +30,8 @@ app.get('/', (req,res) => {
   res.render('index')
 })
 app.get('/applications', (req,res) => {
-  res.render('applications')
+  res.render('applicationsView')
 })
-
 app.get('/login', (req,res) => {
   res.render('loginView')
 })
