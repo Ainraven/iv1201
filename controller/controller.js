@@ -15,12 +15,14 @@ class Controller {
         this.acceptApplication = this.acceptApplication.bind(this)
         this.rejectApplication = this.rejectApplication.bind(this)
         this.pendingApplication = this.pendingApplication.bind(this)
+        this.login = this.login.bind(this)
         this.router.get('/users/:id', this.getUserByID)
         this.router.get('/users', this.getAllUsers)
         this.router.get('/applications', this.getApplications)
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
         this.router.get(`/applications/pending/:id`, this.pendingApplication)
+        this.router.get(`/auth/login`, this.login)
     }
 
     async getUserByID(req, res) {
@@ -36,7 +38,7 @@ class Controller {
     }
 
     async getAllUsers(req, res) {
-        try{
+        try {
             const users = await this.userDAO.findAllPersons()
             if(!users) return res.status(404).json({message: "Users not found"})
             res.json(users)
@@ -47,7 +49,7 @@ class Controller {
     }
 
     async getApplications(req, res) {
-        try{
+        try {
             const applications = await this.applicationDAO.showAllApplications()
             if(!applications) return res.status(404).json({message: "Applications not found"})
             res.json(applications)
@@ -82,6 +84,27 @@ class Controller {
             const pending = await this.applicationDAO.handleApplicationById(req.params.id, null)
             if(!pending) return res.status(404).json({message: "Applications not found"})
             res.json(pending)
+        }
+        catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    }
+
+    async login(req, res) {
+        try {
+            const {loginHandle, password} = req.body
+        
+        // const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        // const isValidEmail = pattern.test(loginHandle)
+
+            const user = await this.userDAO.loginUser(loginHandle, password)
+
+            if(!user) {
+                return res.status(404).json({message: "User not found"})
+            }
+
+            console.log(user)
+            res.json(user)
         }
         catch (error) {
             res.status(500).json({message: error.message})

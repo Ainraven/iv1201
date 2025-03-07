@@ -50,13 +50,14 @@ async function viewAllApplications(){
 }
 
     userDAO.connectToDB().then(async () => {
-        await findAllPersonsTest()
-        await findPersonBasedOnUserName()
-        await findPersonBasedOnID()
-        await transactionTest()
+        // await findAllPersonsTest()
+        // await findPersonBasedOnUserName()
+        // await findPersonBasedOnID()
+        // await transactionTest()
        // await deleteAllApplications();
-        await viewAllApplications()
-        // await applicationDAO.createUnhandledApplicationsForExistingApplicants()
+        //await viewAllApplications()
+        //await applicationDAO.createUnhandledApplicationsForExistingApplicants()
+        await userDAO.encryptExistingPasswords()
     });
 
 
