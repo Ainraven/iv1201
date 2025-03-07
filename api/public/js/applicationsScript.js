@@ -1,3 +1,27 @@
+
+
+
+// function checkUserRole() {
+//     console.log("wow")
+//     const token = localStorage.getItem("token");
+//     console.log("This is token from auth.js", token )
+
+//     if (!token) {
+//         window.location.replace("/login"); // Redirect if no token
+//         return;
+//     }
+
+//     const decoded = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+//     console.log("User role:", decoded.role);
+
+//     if (decoded.role !== 1) {  // Recruiters only
+//         alert("You are not authorized to view this page.");
+//         window.location.replace("/");
+//     }
+// }
+
+// checkUserRole();
+
 /**
  * Fetches applications from api/applications
  * Calls for showApplications to display them for the user
@@ -5,16 +29,18 @@
 async function getApplications() {
     try {
         const token = localStorage.getItem("token")
+        console.log("This is token from getApplications: ", token)
         if(!token) {
             alert("You are not logged in")
             window.location.replace("/login")
             return
         }
 
-        const res = await fetch(`api/applications`, {
+        const res = await fetch(`api/applications/api`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
             }
         })
         if(!res.ok) {

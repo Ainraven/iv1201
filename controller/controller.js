@@ -19,7 +19,7 @@ class Controller {
         this.login = this.login.bind(this)
         this.router.get('/users/:id', this.getUserByID)
         this.router.get('/users', this.getAllUsers)
-        this.router.get('/applications', this.getApplications)
+        this.router.get('/applications/api', this.getApplications)
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
         this.router.get(`/applications/pending/:id`, this.pendingApplication)

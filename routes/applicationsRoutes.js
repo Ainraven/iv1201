@@ -5,13 +5,16 @@ const authenticateToken = require('../middleware/authorisationMiddle')
 
 const contr = new Controller()
 
-router.get('/', authenticateToken, (req, res) => {
-    if(req.user.role_id !== 1){
-        return res.status(403).json({message: "Access Denied"})
+router.get('/', (req, res) => {
+    res.render('applicationsView')
+})
+
+router.get("/api", authenticateToken, (req, res) => {
+    if (req.user.role_id !== 1) {
+        return res.status(403).json({ message: "Access Denied" })
     }
-    else{
-        res.render('applicationsView')
-    }
+    // Fetch and return applications (Modify as needed)
+    res.json({ message: "Applications data here..." })
 })
 
 module.exports = router

@@ -1,5 +1,6 @@
 function checkUserRole() {
     const token = localStorage.getItem("token");
+    console.log("This is token from auth.js", token )
 
     if (!token) {
         window.location.replace("/login"); // Redirect if no token

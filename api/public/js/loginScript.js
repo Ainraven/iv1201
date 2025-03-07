@@ -19,15 +19,11 @@ async function loginUser() {
             body: JSON.stringify({loginHandle, password})
         })
 
-        console.log("Hi")
         if(!res.ok){
             throw new Error(`Login failed: ${res.status}`)
         }
 
-        console.log("RESPONSE:", res)
         const data = await res.json()
-        console.log("DATA: ", data)
-        console.log("TOKEN: ", data.token)
         
         if(!data) {
             alert("Wrong password or username!")
@@ -35,7 +31,8 @@ async function loginUser() {
 
         localStorage.setItem("token", data.token)
 
-        // window.location.replace("/applications")
+        window.location.replace("/applications")
+        // window.location.replace(`/applications?token=${data.token}`)
     } 
     catch(error) {
         console.error(`Error in loginUser()`, error)
