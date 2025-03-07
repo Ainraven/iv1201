@@ -29,16 +29,14 @@ try {
 app.get('/', (req,res) => {
   res.render('index')
 })
-app.get('/applications', (req,res) => {
-  res.render('applicationsView')
-})
 app.get('/login', (req,res) => {
   res.render('loginView')
 })
-app.use('/api', contr.getRouter())
 
 app.use(express.json())
-app.use("/api/auth", require("./routes/authRoutes"))
+app.use('/api', contr.getRouter())
+app.use('/api/auth', require('./routes/authRoutes'))
+app.use('/applications', require('./routes/applicationsRoutes'))
 
 const PORT = process.env.SERVER_PORT || 3000
 

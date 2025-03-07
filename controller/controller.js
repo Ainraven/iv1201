@@ -106,8 +106,7 @@ class Controller {
                  process.env.JWT_SECRET,
                  {expiresIn: '1h'}
             )
-
-            res.json(token)
+            res.json({token})
         }
         catch (error) {
             res.status(500).json({message: error.message})

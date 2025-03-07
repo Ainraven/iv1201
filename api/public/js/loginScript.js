@@ -6,8 +6,6 @@ async function loginUser() {
     const loginHandle = document.getElementById("loginHandle").value
     const password = document.getElementById("password").value
 
-    console.log()
-
     if(!loginHandle || !password) {
         alert("Please enter both username/email and password.")
     }
@@ -21,31 +19,27 @@ async function loginUser() {
             body: JSON.stringify({loginHandle, password})
         })
 
-        console.log("here")
-        console.log(res)
-
+        console.log("Hi")
         if(!res.ok){
             throw new Error(`Login failed: ${res.status}`)
         }
 
+        console.log("RESPONSE:", res)
         const data = await res.json()
+        console.log("DATA: ", data)
+        console.log("TOKEN: ", data.token)
         
         if(!data) {
             alert("Wrong password or username!")
         }
-        window.location.replace("/")
+
+        localStorage.setItem("token", data.token)
+
+        // window.location.replace("/applications")
     } 
     catch(error) {
         console.error(`Error in loginUser()`, error)
     }
-
-    /**
-     * try fetch user in database
-     *      if username does not exist -> alert that user did not exist
-     *      if password did not match user -> alert that user has the wrong password
-     *      else send user back to page that prompted login or just some type of main page
-     * catch error
-     */
 }
 
 /**

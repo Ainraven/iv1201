@@ -4,7 +4,19 @@
  */
 async function getApplications() {
     try {
-        const res = await fetch(`api/applications`)
+        const token = localStorage.getItem("token")
+        if(!token) {
+            alert("You are not logged in")
+            window.location.replace("/login")
+            return
+        }
+
+        const res = await fetch(`api/applications`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
         if(!res.ok) {
             throw new Error(`API error`, res.status)
         }
