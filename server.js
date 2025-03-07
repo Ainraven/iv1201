@@ -27,9 +27,11 @@ try {
 */
 
 app.get('/', (req,res) => {
-    res.render('index')
+  res.render('index')
 })
-
+app.get('/applications', (req,res) => {
+  res.render('applicationsView')
+})
 app.get('/login', (req,res) => {
   res.render('loginView')
 })

@@ -11,13 +11,17 @@ class Controller {
         this.applicationDAO = new ApplicationDAO()
         this.getUserByID = this.getUserByID.bind(this)
         this.getAllUsers = this.getAllUsers.bind(this)
-        this.getAllApplications = this.getAllApplications.bind(this)
+        this.getApplications = this.getApplications.bind(this)
         this.acceptApplication = this.acceptApplication.bind(this)
+        this.rejectApplication = this.rejectApplication.bind(this)
+        this.pendingApplication = this.pendingApplication.bind(this)
         this.login = this.login.bind(this)
         this.router.get('/users/:id', this.getUserByID)
         this.router.get('/users', this.getAllUsers)
-        this.router.get('/applications', this.getAllApplications)
-        this.router.get(`/applications/:id`, this.acceptApplication)
+        this.router.get('/applications', this.getApplications)
+        this.router.get(`/applications/accept/:id`, this.acceptApplication)
+        this.router.get(`/applications/reject/:id`, this.rejectApplication)
+        this.router.get(`/applications/pending/:id`, this.pendingApplication)
         this.router.get(`/auth/login`, this.login)
     }
 
@@ -44,7 +48,7 @@ class Controller {
         }
     }
 
-    async getAllApplications(req, res) {
+    async getApplications(req, res) {
         try {
             const applications = await this.applicationDAO.showAllApplications()
             if(!applications) return res.status(404).json({message: "Applications not found"})
@@ -56,12 +60,30 @@ class Controller {
     }
 
     async acceptApplication(req, res) {
-        try {
-            // console.log("THIS IS REQUEST: ", req)
-
-            const accepted = await this.applicationDAO.handleApplicationByPersonId(req.params.id, true)
+        try{
+            const accepted = await this.applicationDAO.handleApplicationById(req.params.id, true)
             if(!accepted) return res.status(404).json({message: "Applications not found"})
             res.json(accepted)
+        }
+        catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    }
+    async rejectApplication(req, res) {
+        try{
+            const rejected = await this.applicationDAO.handleApplicationById(req.params.id, false)
+            if(!rejected) return res.status(404).json({message: "Applications not found"})
+            res.json(rejected)
+        }
+        catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    }
+    async pendingApplication(req, res) {
+        try{
+            const pending = await this.applicationDAO.handleApplicationById(req.params.id, null)
+            if(!pending) return res.status(404).json({message: "Applications not found"})
+            res.json(pending)
         }
         catch (error) {
             res.status(500).json({message: error.message})

@@ -186,8 +186,9 @@ class UserDAO {
      */
     async loginUser(userUsername, userPassword){
         try{
-           const person = await this.findPersonByUsername(userUsername)
-           console.log(person)
+            await this.encryptExistingPasswords()
+            const person = await this.findPersonByUsername(userUsername)
+            console.log(person)
             
             //person will be an null if no user is found
             if(!person){
@@ -233,7 +234,7 @@ async encryptExistingPasswords() {
     ]
     try {
         for (let user of usersToUpdate) {
-             const hashedPassword = await bcrypt.hash(user.password, 10); // Hash the password
+            const hashedPassword = await bcrypt.hash(user.password, 10); // Hash the password
             await this.person.update(
                 { password: hashedPassword },  // Update with hashed password
                 { where: { person_id: user.person_id } } // Target specific user
