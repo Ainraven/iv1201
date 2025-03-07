@@ -36,6 +36,13 @@ class UserDAO {
             await this.database.models.competence_profile.sync()
             await this.database.models.availability.sync()
             await this.database.models.application.sync()
+            await this.database.models.application_status.sync().then(async () => {
+                const statuses = ['PENDING', 'ACCEPTED', 'REJECTED']
+                for (const status of statuses) {
+                  await ApplicationStatus.findOrCreate({ 
+                    where: { status_name: status } 
+                  })
+                }})
         
         } catch (error) {
             console.error('Unable to connect to the database:', error)
