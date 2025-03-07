@@ -62,7 +62,6 @@ class UserDAO {
              const person = await this.person.findOne({
                 where: {username:username}
              })
-             console.log(person)
              return person;
             }
             catch(err){
@@ -186,9 +185,8 @@ class UserDAO {
      */
     async loginUser(userUsername, userPassword){
         try{
-            await this.encryptExistingPasswords()
+            // await this.encryptExistingPasswords()
             const person = await this.findPersonByUsername(userUsername)
-            console.log(person)
             
             //person will be an null if no user is found
             if(!person){
@@ -197,9 +195,6 @@ class UserDAO {
             }
 
             const isValidPassword = await this.checkPassword(person, userPassword)
-            console.log(person.password)
-            console.log(userPassword)
-            console.log(isValidPassword)
 
             if(isValidPassword){
                 console.log("Log in success")
@@ -209,7 +204,6 @@ class UserDAO {
                 console.log("Incorrect password")
                 return null
             }
-        
         }
         catch(error){
             console.debug("loginUser Failed" + error)

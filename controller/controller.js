@@ -2,6 +2,8 @@
 const UserDAO = require('../integration/UserDAO')
 const ApplicationDAO = require('../integration/ApplicationDAO')
 const express = require('express')
+const jwt = require('jsonwebtoken')
+const authenticateToken = require('../middleware/authorisationMiddle')
 
 class Controller {
     
@@ -21,7 +23,7 @@ class Controller {
         this.router.get('/users/:id', this.getUserByID)
         //this.router.get('/users/username/:id', this.getUserByUsername)
         this.router.get('/users', this.getAllUsers)
-        this.router.get('/applications', this.getApplications)
+        this.router.get('/applications/api', authenticateToken, this.getApplications)
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
         this.router.get(`/applications/pending/:id`, this.pendingApplication)
@@ -70,6 +72,10 @@ class Controller {
 
     async getApplications(req, res) {
         try {
+            console.log("This is role: ", req.user.role)
+            if (req.user.role !== 1) {
+                return res.status(403).json({ message: "Access Denied" })
+            }
             const applications = await this.applicationDAO.showAllApplications()
             if(!applications) return res.status(404).json({message: "Applications not found"})
             res.json(applications)
@@ -113,9 +119,6 @@ class Controller {
     async login(req, res) {
         try {
             const {loginHandle, password} = req.body
-        
-        // const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        // const isValidEmail = pattern.test(loginHandle)
 
             const user = await this.userDAO.loginUser(loginHandle, password)
 
@@ -123,8 +126,12 @@ class Controller {
                 return res.status(404).json({message: "User not found"})
             }
 
-            console.log(user)
-            res.json(user)
+            const token = jwt.sign(
+                 {id: user.person_id, username: user.username, role: user.role_id},
+                 process.env.JWT_SECRET,
+                 {expiresIn: '1h'}
+            )
+            res.json({token})
         }
         catch (error) {
             res.status(500).json({message: error.message})
