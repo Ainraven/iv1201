@@ -27,7 +27,7 @@ try {
 */
 
 app.get('/', (req,res) => {
-    res.render('index')
+    res.render('create_user')
 })
 
 app.use('/api', contr.getRouter())
