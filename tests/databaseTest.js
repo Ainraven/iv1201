@@ -50,17 +50,11 @@ async function viewAllApplications(){
    console.log('All applications:', JSON.stringify(applications, null, 2));
 }
 
-    connectToDB().then(async () => {
-        // await findAllPersonsTest()
-        // await findPersonBasedOnUserName()
-        // await findPersonBasedOnID()
-        // await transactionTest()
-       // await deleteAllApplications();
-        //await viewAllApplications()
-        //await applicationDAO.createUnhandledApplicationsForExistingApplicants()
-        await userDAO.encryptExistingPasswords()
-    });
 
-
+     (async () => {
+        await connectToDB()
+        await userDAO.encryptExistingPasswords();
+        await database.close()
+    })()
 
 
