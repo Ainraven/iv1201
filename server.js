@@ -28,6 +28,9 @@ app.get('/', (req,res) => {
 app.get('/myprofile', (req,res) => {
   res.render('profileView')
 })
+app.use((req, res) => {
+  res.status(404).render("404")
+})
 
 // Routes
 app.use('/api', contr.getRouter())

@@ -50,6 +50,13 @@ body {
     border-radius: 5px;
 }
 
+/* 404 */
+.err404 {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
 
 #applications {
 
