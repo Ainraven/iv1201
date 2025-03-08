@@ -2,7 +2,7 @@ require('dotenv').config({path: `${process.cwd()}/../.env`})
 const cls = require('cls-hooked')
 const bcrypt = require('bcrypt')
 const Sequelize = require ('sequelize')
-const { getDatabase } = require('./dbInit')
+const { getDatabase, models } = require('./dbInit')
 
 
 /* 
@@ -18,7 +18,6 @@ class UserDAO {
         Sequelize.useCLS(name)
 
         this.database = getDatabase()
-        const models = this.database.models
         this.person = models.person
     }
 
