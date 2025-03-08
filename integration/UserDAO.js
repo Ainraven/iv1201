@@ -1,10 +1,9 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`})
-const { initModels } = require('../model/init-models')
 const cls = require('cls-hooked')
 const bcrypt = require('bcrypt')
-
-const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize')
+const { getDatabase } = require('./dbInit')
+
 
 /* 
 Class containing constructor for the DAO and its related methods pertaining to users. It is responsible for calls to the database.
@@ -18,8 +17,8 @@ class UserDAO {
         const name = cls.createNamespace('iv1201-db')
         Sequelize.useCLS(name)
 
-        this.database = require(databaseConfigPath)
-        const models = initModels(this.database)
+        this.database = getDatabase()
+        const models = this.database.models
         this.person = models.person
     }
 
