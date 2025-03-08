@@ -9,27 +9,13 @@
 async function createNewUser() {
     const firstname = document.getElementById("firstname").value
     const lastname = document.getElementById("lastname").value
-    const personNumber = document.getElementById("person-number").value
+    const personalNumber = document.getElementById("person-number").value
     const username = document.getElementById("username").value
     const password = document.getElementById("password").value
 
-    if (!firstname || !lastname || !personNumber || !username || !password) {
+    if (!firstname || !lastname || !personalNumber || !username || !password) {
         alert("Please enter your information in all fields.")
     }
-
-    /* const userName = getUserByUsername(username)
-    const personNum = getUserByPersonNumber(personNumber)
-
-    if(!personNum) {
-        if (!userName) {
-            addUserToDatabase(firstname, lastname, personNumber, username, password)
-            //sendUserToLoginPage()
-        } else {
-            alert("Username is already taken. Please enter a unique username.")
-        }
-    } else {
-        alert("There already is a user with that person number.")
-    } */
 
     try {
         const res = await fetch("/auth/signup/api", {
@@ -37,7 +23,7 @@ async function createNewUser() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({firstname, lastname, personNumber, username, password})
+            body: JSON.stringify({firstname, lastname, personalNumber, username, password})
         })
 
         if (!res.ok) {
@@ -85,11 +71,11 @@ async function getUserByUsername(username) {
 /**
  * Calls for a search in the database for the user's person number. 
  * If the person number already is registered then the user already exist.
- * @param {string} personNumber is used for the fetch from the database.
+ * @param {string} personalNumber is used for the fetch from the database.
  * @returns true or false depending if the person number is found in the database.
  */
-async function getUserByPersonNumber(personNumber) {
-    const res = await fetch(`/api/users/${personNumber}`)
+async function getUserByPersonalNumber(personalNumber) {
+    const res = await fetch(`/api/users/${personalNumber}`)
     try {
         if (!res.ok) {
             throw new Error(`API error: `, res.status)
@@ -100,7 +86,7 @@ async function getUserByPersonNumber(personNumber) {
     }
 }
 
-async function addUserToDatabase(firstname, lastname, personNumber, username, password) {
+async function addUserToDatabase(firstname, lastname, personalNumber, username, password) {
     
 }
 

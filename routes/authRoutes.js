@@ -8,6 +8,6 @@ router.get('/login', (req, res) => {res.render('loginView')})
 router.post('/login/api', (req, res) => contr.login(req, res))
 
 router.get('/signup', (req, res) => {res.render('signup')})
-router.post('/signup/api', (req, res) => contr.createUser(req, res))
+router.post('/signup/api', (req, res) => contr.signup(req, res))
 
 module.exports = router

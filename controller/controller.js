@@ -22,7 +22,7 @@ class Controller {
         this.rejectApplication = this.rejectApplication.bind(this)
         this.pendingApplication = this.pendingApplication.bind(this)
         this.login = this.login.bind(this)
-        this.createUser = this.createUser.bind(this)
+        this.signup = this.signup.bind(this)
 
         // Map fuinctions to API endpoints, always starts with /api/... for the sake of other files
         this.router.get('/users/:id', this.getUserByID)
@@ -32,7 +32,6 @@ class Controller {
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
         this.router.get(`/applications/pending/:id`, this.pendingApplication)
-        this.router.get(`/users/create-user`, this.createUser)
     }
 
     async getUserByID(req, res) {
@@ -148,12 +147,22 @@ class Controller {
      * @param {*} res 
      * @returns 
      */
-    async createUser(req, res) {
+    async signup(req, res) {
         try {
-            const user = await this.userDAO.findPersonByUsername(req.params.username)
+            const {firstname, lastname, personalNumber, username, password} = req.body
+
+            const user = await this.userDAO.findPersonByUsername(username)
 
             if (!user) {
-                const newUser = await this.userDAO.createUser(req.params)
+                const newUser = await this.userDAO.createUser({
+                    username: username,
+                    password: password,
+                    firstname: firstname,
+                    lastname: lastname,
+                    personalNumber: personalNumber,
+                    email: null,
+                    role: 2
+                })
                 if (!newUser) {
                     return res.status(500).json({message: "Unable to create new user"})
                 }
