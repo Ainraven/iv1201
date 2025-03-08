@@ -1,8 +1,10 @@
 const databaseConfigPath = './config/database.js'
 const database = require(databaseConfigPath)
+const {initModels} = require('../model/init-models')
+
 
 /**
-Method used to confirm that a connection has been established and create tables.
+ * Method used to initialize models, create relevant tables for the app and confirm that a connection has been established
 */ 
 async function connectToDB(){
     try {
@@ -19,15 +21,43 @@ async function connectToDB(){
  */
 async function createTables(){
     try{
-        await database.model.role.sync().then(insertRoleValues)
-        await database.model.person.sync()
-        await database.model.competence.sync()
-        await database.model.competence_profile.sync()
-        await database.model.availability.sync()
-        await database.model.application_status.sync().then(insertApplicationStatusValues)
-        await database.model.application.sync()
+        await syncModels()
+        await insertRoleValues()
+        await insertApplicationStatusValues()
     } catch(error){
         console.log("Could not create tables " + error)
+    }
+}
+/**
+ * Initializes and syncs the models with the database. 
+ * Manually loops through all of models in the order of the list due to foreign key constraints
+ * Important order is role -> person and application_status -> application
+ */
+async function syncModels(){
+    const models = initModels(database)
+    const modelList = ["role",
+        "person", 
+        "competence" , 
+        "competence_profile", 
+        "availability", 
+        "application_status", 
+        "application"]
+
+    //Iterates the list of models from initModels and syncs with database
+    for (const modelName of modelList) {
+        const model = models[modelName]
+
+        if(!model){
+            console.log("Model " + modelName + "does not exist")
+        }
+
+        //drop table before syncing if not in production environment, otherwise alter db to match models
+        try{
+            const syncOptions = process.env.NODE_ENV === 'production' ? { alter: true } : { force: true }
+            await model.sync(syncOptions)
+        } catch(error){
+            console.log("Cannot sync model " + modelName  +": " + error)
+        }
     }
 }
 
@@ -38,9 +68,9 @@ async function createTables(){
 async function insertApplicationStatusValues(){
     const statuses = ['PENDING', 'ACCEPTED', 'REJECTED']
     for (const status of statuses) {
-      await database.model.application_status.findOrCreate({ 
-        where: { name: status } 
-      })
+        await database.models.application_status.findOrCreate({ 
+            where: { name: status } 
+        })
     }
     console.log("Application status is initialized")
 }
@@ -53,7 +83,7 @@ async function insertApplicationStatusValues(){
 async function insertRoleValues(){
     const roles = ['recruiter', 'applicant']
     for (const role of roles) {
-        await database.model.role.findOrCreate({ 
+        await database.models.role.findOrCreate({ 
         where: { name: role } 
         })
     }
@@ -62,7 +92,7 @@ async function insertRoleValues(){
 
 /**
  * @returns the database which is used for transactions. This way the controller wont have
- * to directly interact with the database object through the constructor.
+ * to directly interact with the database object through the constructor. Also used to return the database object to the DAOs
  */
 function getDatabase(){
     return database
