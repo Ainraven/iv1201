@@ -1,34 +1,37 @@
-// const userService = require('../service/userService')
-const UserDAO = require('../integration/UserDAO')
-const ApplicationDAO = require('../integration/ApplicationDAO')
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const UserDAO = require('../integration/UserDAO')
+const ApplicationDAO = require('../integration/ApplicationDAO')
 const authenticateToken = require('../middleware/authorisationMiddle')
 
+/**
+ * Handles calls between frontend and backend
+ */
 class Controller {
     
     constructor() {
+        // Bind functions to this object
         this.router = express.Router()
         this.userDAO = new UserDAO()
         this.applicationDAO = new ApplicationDAO()
         this.getUserByID = this.getUserByID.bind(this)
         this.getAllUsers = this.getAllUsers.bind(this)
-        //this.getUserByUsername = this.getUserByUsername.bind(this)
+        this.getUserByUsername = this.getUserByUsername.bind(this)
         this.getApplications = this.getApplications.bind(this)
         this.acceptApplication = this.acceptApplication.bind(this)
         this.rejectApplication = this.rejectApplication.bind(this)
         this.pendingApplication = this.pendingApplication.bind(this)
         this.login = this.login.bind(this)
-        this.createUser = this.createUser.bind(this)
+        this.signup = this.signup.bind(this)
+
+        // Map fuinctions to API endpoints, always starts with /api/... for the sake of other files
         this.router.get('/users/:id', this.getUserByID)
-        //this.router.get('/users/username/:id', this.getUserByUsername)
+        this.router.get('/users/username/:id', this.getUserByUsername)
         this.router.get('/users', this.getAllUsers)
-        this.router.get('/applications/api', authenticateToken, this.getApplications)
+        this.router.get('/applications', authenticateToken, this.getApplications)
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
         this.router.get(`/applications/pending/:id`, this.pendingApplication)
-        this.router.get(`/auth/login`, this.login)
-        this.router.get(`/users/create-user`, this.createUser)
     }
 
     async getUserByID(req, res) {
@@ -49,7 +52,7 @@ class Controller {
      * @param {*} res 
      * @returns 
      */
-/*     async getUserByUsername(req, res) {
+    async getUserByUsername(req, res) {
         try {
             const user = await this.userDAO.findPersonByUsername(req.param.username)
             if (!user) return res.status(404).json({message: "User not found"})
@@ -57,7 +60,7 @@ class Controller {
         } catch (error) {
             res.status(500).json({message: error.message})
         }
-    } */
+    } 
 
     async getAllUsers(req, res) {
         try {
@@ -144,12 +147,22 @@ class Controller {
      * @param {*} res 
      * @returns 
      */
-    async createUser(req, res) {
+    async signup(req, res) {
         try {
-            const user = await this.userDAO.findPersonByUsername(req.params.username)
+            const {firstname, lastname, personalNumber, username, password} = req.body
+
+            const user = await this.userDAO.findPersonByUsername(username)
 
             if (!user) {
-                const newUser = await this.userDAO.createUser(req.params)
+                const newUser = await this.userDAO.createUser({
+                    username: username,
+                    password: password,
+                    firstname: firstname,
+                    lastname: lastname,
+                    personalNumber: personalNumber,
+                    email: null,
+                    role: 2
+                })
                 if (!newUser) {
                     return res.status(500).json({message: "Unable to create new user"})
                 }

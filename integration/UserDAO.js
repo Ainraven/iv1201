@@ -59,13 +59,13 @@ class UserDAO {
     */
     async findPersonByUsername(username){
         try{
-             const person = await this.person.findOne({
+            const person = await this.person.findOne({
                 where: {username:username}
-             })
-             return person;
-            }
-            catch(err){
-                console.log("failed to find person", err)
+            })
+            return person;
+        }
+        catch(err){
+            console.log("failed to find person", err)
         }
     }
 
@@ -77,10 +77,10 @@ class UserDAO {
     */
     async findPersonByEmail(email){
         try{
-             const person = await this.person.findAll({
+            const person = await this.person.findAll({
                 where: {email:email}
-             })
-             return person
+            })
+            return person
             }
             catch(err){
                 console.log("failed to find person", err)
