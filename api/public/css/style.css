@@ -50,11 +50,12 @@ body {
     border-radius: 5px;
 }
 
-/* 404 */
-.err404 {
+/* Error pages */
+.err {
     text-align: center;
     padding: 0;
     margin: 0;
+    font-size: large;
 }
 
 
