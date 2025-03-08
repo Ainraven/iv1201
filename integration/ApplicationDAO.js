@@ -42,11 +42,12 @@ class ApplicationDAO{
     * TRUE:accepted, FALSE: rejected, NULL:unhandled
     * @returns a JSON with the application
     */
-    async createApplication(personID, status){
+    async createApplication(personID, statusID){
         try{
+            console.log(`Creating application with personID: ${personID}, statusID: ${statusID}`)
             const application = await this.application.create({
                 person_id : personID,
-                application_status : status,
+                application_status_id : statusID,
                 })
             return application
         }catch(error){
@@ -65,7 +66,7 @@ class ApplicationDAO{
      */
     async handleApplicationByPersonId(personID, status){
         try{
-            const application = await this.application.update({application_status : status},
+            const application = await this.application.update({application_status_id : status},
                 {where: {person_id :personID},
                 returning:true      //used to return the updated row
                 }
