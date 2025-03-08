@@ -44,7 +44,6 @@ class ApplicationDAO{
     */
     async createApplication(personID, statusID){
         try{
-            console.log(`Creating application with personID: ${personID}, statusID: ${statusID}`)
             const application = await this.application.create({
                 person_id : personID,
                 application_status_id : statusID,

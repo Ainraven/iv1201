@@ -60,8 +60,6 @@ describe('Application Database Integration Tests', () => {
         const app = await applicationDAO.createApplication(user.person_id,1)
         const foundApp = await applicationDAO.findApplicationByApplicationId(app.application_id)
 
-        console.debug(foundApp)
-
         await expect(foundApp).not.toBeNull()
         await expect(app.application_id).toEqual(foundApp[0].application_id)
         await expect(app.person_id).toEqual(foundApp[0].person_id)
