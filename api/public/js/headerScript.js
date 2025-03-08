@@ -6,7 +6,6 @@
  */
 async function loadNavigation() {
     try {
-        console.log("loadNavigation is here")
         const token = localStorage.getItem("token")
         if(!token) {
             createNavElement("href", "/auth/login", "Login")
@@ -59,9 +58,7 @@ function parseJwt(token) {
 }
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ * Logs person out by removing their token from the local storage and redirecting them to home page
  */
 async function logout() {
     localStorage.removeItem("token")

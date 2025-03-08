@@ -25,6 +25,9 @@ app.use(express.json())
 app.get('/', (req,res) => {
   res.render('index')
 })
+app.get('/myprofile', (req,res) => {
+  res.render('profileView')
+})
 
 // Routes
 app.use('/api', contr.getRouter())

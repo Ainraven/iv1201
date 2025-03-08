@@ -17,6 +17,7 @@ class Controller {
         this.getUserByID = this.getUserByID.bind(this)
         this.getAllUsers = this.getAllUsers.bind(this)
         this.getUserByUsername = this.getUserByUsername.bind(this)
+        this.getApplicationByUserID = this.getApplicationByUserID.bind(this)
         this.getApplications = this.getApplications.bind(this)
         this.acceptApplication = this.acceptApplication.bind(this)
         this.rejectApplication = this.rejectApplication.bind(this)
@@ -28,6 +29,7 @@ class Controller {
         this.router.get('/users/:id', this.getUserByID)
         this.router.get('/users/username/:id', this.getUserByUsername)
         this.router.get('/users', this.getAllUsers)
+        this.router.get('/applications/:id', this.getApplicationByUserID)
         this.router.get('/applications', authenticateToken, this.getApplications)
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
@@ -78,6 +80,16 @@ class Controller {
         }
         catch (error) {
             res.status(500).json({message: error.message})
+        }
+    }
+
+    async getApplicationByUserID(req, res) {
+        try {
+            const application = await this.applicationDAO.findApplicationByUserId(req.params.id)
+            if(!application) return res.status(404).json({message: "Application not found"})
+            res.json(application)
+        } catch (err) {
+            res.status(500).json({message: err.message})
         }
     }
 
