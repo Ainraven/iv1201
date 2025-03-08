@@ -23,42 +23,6 @@ class UserDAO {
         this.person = models.person
     }
 
-    /*
-    Method used to confirm that a connection has been established
-    */ 
-    async connectToDB(){
-        try {
-            await this.database.authenticate()
-            console.log('Connection has been established successfully.')
-            await this.database.models.role.sync()
-            await this.database.models.person.sync()
-            await this.database.models.competence.sync()
-            await this.database.models.competence_profile.sync()
-            await this.database.models.availability.sync()
-            await this.database.models.application_status.sync().then(async () => {
-                const statuses = ['PENDING', 'ACCEPTED', 'REJECTED']
-                for (const status of statuses) {
-                  await this.database.models.application_status.findOrCreate({ 
-                    where: { name: status } 
-                  })
-                }})
-            await this.database.models.application.sync()
-
-        
-        } catch (error) {
-            console.error('Unable to connect to the database:', error)
-        }
-    }
-
-    /**
-     * 
-     * @returns the database which is used for transactions. This way the controller wont have
-     * to directly interact with the database object through the constructor.
-     */
-    getDatabase(){
-        return this.database
-    }
-
    /**
     * Method used to find a user in the person table based on their username.
     * 
