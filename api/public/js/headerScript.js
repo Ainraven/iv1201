@@ -6,19 +6,18 @@
  */
 async function loadNavigation() {
     try {
-        var navlist = document.getElementById("navlist")
-
+        console.log("loadNavigation is here")
         const token = localStorage.getItem("token")
         if(!token) {
-            createNavElement("/auth/login", "Login")
-            createNavElement("/auth/signup", "Sign up")
+            createNavElement("href", "/auth/login", "Login")
+            createNavElement("href", "/auth/signup", "Sign up")
         } else {
             const decodedToken = parseJwt(token)
             if(decodedToken.role === 1) {
-                createNavElement("/applications", "Applications")
+                createNavElement("href", "/applications", "Applications")
             }
-            createNavElement("/myprofile", decodedToken.username)
-            createNavElement("/auth/logout", "Log out")
+            createNavElement("href", "/myprofile", decodedToken.username)
+            createNavElement("onclick", "logout()", "Log out")
         }   
     }
     catch(err){
@@ -28,13 +27,15 @@ async function loadNavigation() {
 
 /**
  * Adds an element to the navigation bar
- * @param {String} endpoint link to a page 
+ * @param {String} attr element attribute, e.g. href
+ * @param {String} attrText function or link for attribute 
  * @param {String} text describes what the button does
  */
-async function createNavElement(endpoint, text) {
+async function createNavElement(attr, attrText, text) {
+    var navlist = document.getElementById("navlist")
     var element = document.createElement('li')
     var elementLink = document.createElement('a')
-    elementLink.setAttribute("href", endpoint)
+    elementLink.setAttribute(attr, attrText)
     elementLink.appendChild(document.createTextNode(text))
     element.appendChild(elementLink)
     navlist.appendChild(element)
@@ -55,4 +56,14 @@ function parseJwt(token) {
         console.error("Invalid token format", e)
         return null
     }
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+async function logout() {
+    localStorage.removeItem("token")
+    window.location.replace("/")
 }
