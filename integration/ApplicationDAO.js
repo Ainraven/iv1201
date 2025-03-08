@@ -5,11 +5,9 @@ const cls = require('cls-hooked')
 const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize')
 
-
-/* 
+/**  
 Class containing constructor for the DAO and its related methods pertaining to users. It is responsible for calls to the database.
 */
-
 class ApplicationDAO{
 
 /** 
@@ -23,15 +21,6 @@ class ApplicationDAO{
         const models = initModels(this.database)
         this.person = models.person
         this.application = models.application
-    }
-
-     /**
-     * 
-     * @returns the database which is used for transactions. This way the controller wont have
-     * to directly interact with the database object through the constructor.
-     */
-    getDatabase(){
-        return this.database
     }
 
    /**
