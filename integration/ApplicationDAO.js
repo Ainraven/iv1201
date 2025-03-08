@@ -131,9 +131,9 @@ class ApplicationDAO{
     }
 
     /**
-     * Method used to find an application based on application ID in the database.
+     * Method used to find an application based on user ID in the database.
      * 
-     * @param {int} applicationID used to match with an existing application_id in the database
+     * @param {int} userID used to match with an existing person_id in the database
      * @returns a JSON with the selected row in the application table, 
      * containing person_id, application_id and application_status
      */

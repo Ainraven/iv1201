@@ -1,3 +1,6 @@
+/**
+ * Displays profile information depending on user's role
+ */
 async function renderProfileInfo() {
     
     const token = localStorage.getItem("token")
@@ -36,6 +39,12 @@ async function renderProfileInfo() {
     console.log("THIS IS DATA", data)
     
 }
+/**
+ * Adds a singular line 
+ * @param {String} tag HTML tag, like "h2" 
+ * @param {String} item Title text, like "Name"
+ * @param {String} value Value text, like "Violet"
+ */
 async function addLine(tag, item, value) {
     const info = document.getElementById("myprofile")
     const element = document.createElement(tag)
