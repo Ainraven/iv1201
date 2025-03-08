@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "application_status_pkey",
         unique: true,
         fields: [
-          { name: "role_id" },
+          { name: "application_status_id" },
         ]
       },
     ]

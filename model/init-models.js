@@ -26,6 +26,9 @@ function initModels(sequelize) {
   role.hasMany(person, { as: "people", foreignKey: "role_id"});
   application.belongsTo(person, { as: "person", foreignKey: "person_id"});
   application.belongsTo(application_status, { as: "application_status", foreignKey: "application_status_id"});
+  application_status.hasMany(application, { as: "application", foreignKey: "application_status_id" });
+
+
 
   return {
     availability,
