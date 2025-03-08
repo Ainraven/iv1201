@@ -20,7 +20,8 @@ const person2 = {username:"JoeMama",
 
 describe('UserDAO Database Integration Tests', () => {
     let userDAO
-    beforeAll( () => {
+    beforeAll(async () => {
+        await connectToDB() 
         process.env.NODE_ENV = "test"   //used to use an emtpy database with a similar structure to the "actual" database
         userDAO = new UserDAO()
     })
