@@ -32,7 +32,7 @@ async function createNewUser() {
     } */
 
     try {
-        const res = await fetch("/api/auth/create-user", {
+        const res = await fetch("/auth/signup/api", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

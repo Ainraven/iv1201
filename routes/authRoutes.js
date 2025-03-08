@@ -4,13 +4,10 @@ const Controller = require("../controller/controller")
 
 const contr = new Controller()
 
-router.get('/login', (req, res) => {
-    res.render('loginView')
-})
-router.get('/signup', (req, res) => {
-    res.render('signup')
-})
+router.get('/login', (req, res) => {res.render('loginView')})
+router.post('/login/api', (req, res) => contr.login(req, res))
 
-router.post("/login/api", (req, res) => contr.login(req, res))
+router.get('/signup', (req, res) => {res.render('signup')})
+router.post('/signup/api', (req, res) => contr.createUser(req, res))
 
 module.exports = router
