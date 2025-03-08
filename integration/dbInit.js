@@ -1,7 +1,7 @@
 const databaseConfigPath = './config/database.js'
 const database = require(databaseConfigPath)
 const {initModels} = require('../model/init-models')
-
+const models = initModels(database)
 
 /**
  * Method used to initialize models, create relevant tables for the app and confirm that a connection has been established
@@ -29,12 +29,11 @@ async function createTables(){
     }
 }
 /**
- * Initializes and syncs the models with the database. 
+ * Syncs the models with the database. 
  * Manually loops through all of models in the order of the list due to foreign key constraints
  * Important order is role -> person and application_status -> application
  */
 async function syncModels(){
-    const models = initModels(database)
     const modelList = ["role",
         "person", 
         "competence" , 
@@ -51,9 +50,9 @@ async function syncModels(){
             console.log("Model " + modelName + "does not exist")
         }
 
-        //drop table before syncing if not in production environment, otherwise alter db to match models
+        //drop table before syncing if in test environment, otherwise create tables without changing existing data
         try{
-            const syncOptions = process.env.NODE_ENV === 'production' ? { alter: true } : { force: true }
+            const syncOptions = process.env.NODE_ENV === 'test' ? { force: true } : {} 
             await model.sync(syncOptions)
         } catch(error){
             console.log("Cannot sync model " + modelName  +": " + error)
@@ -97,4 +96,4 @@ async function insertRoleValues(){
 function getDatabase(){
     return database
 }
-module.exports = {connectToDB, getDatabase}
+module.exports = {connectToDB, getDatabase, models}
