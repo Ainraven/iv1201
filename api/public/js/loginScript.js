@@ -1,6 +1,6 @@
 /**
- * 
- * @returns 
+ * Takes username and password, verifies and stores user token in local storage
+ * Sends user to the home page afterwards
  */
 async function loginUser() {
     const loginHandle = document.getElementById("loginHandle").value
@@ -31,8 +31,7 @@ async function loginUser() {
 
         localStorage.setItem("token", data.token)
 
-        window.location.replace("/applications")
-        // window.location.replace(`/applications?token=${data.token}`)
+        window.location.replace("/")
     } 
     catch(error) {
         console.error(`Error in loginUser()`, error)

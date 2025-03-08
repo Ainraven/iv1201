@@ -34,9 +34,13 @@ class Controller {
         this.router.get(`/applications/pending/:id`, this.pendingApplication)
     }
 
+    /**
+     * Finds user by user ID and returns json of said user to api/users/:id
+     * @param {*} req id
+     * @param {*} res user
+     */
     async getUserByID(req, res) {
         try {
-            // const user = await userService.getUserById(req.param.id)
             const user = await this.userDAO.findUserById(req.params.id)
             if(!user) return res.status(404).json({message: "User not found"})
             res.json(user)
@@ -47,10 +51,9 @@ class Controller {
     }
 
     /**
-     * 
-     * @param {*} req 
-     * @param {*} res 
-     * @returns 
+     * Finds user by a username and returns json of said user to api/users/username/:id
+     * @param {*} req username
+     * @param {*} res user
      */
     async getUserByUsername(req, res) {
         try {
@@ -62,6 +65,11 @@ class Controller {
         }
     } 
 
+    /**
+     * Retrieves all users from the database and returns json to api/users
+     * @param {*} req -
+     * @param {*} res users
+     */
     async getAllUsers(req, res) {
         try {
             const users = await this.userDAO.findAllPersons()
@@ -73,9 +81,14 @@ class Controller {
         }
     }
 
+    /**
+     * Retrieves all applications from the database and put them as json on api/applications
+     * It does so only if user is a recruiter (role_id = 1), otherwise access is denied
+     * @param {*} req user
+     * @param {*} res applications
+     */
     async getApplications(req, res) {
         try {
-            console.log("This is role: ", req.user.role)
             if (req.user.role !== 1) {
                 return res.status(403).json({ message: "Access Denied" })
             }
@@ -88,6 +101,12 @@ class Controller {
         }
     }
 
+    /**
+     * Sets application status to "accepted"
+     * @param {*} req application id
+     * @param {*} res accepted application
+     * @returns 
+     */
     async acceptApplication(req, res) {
         try{
             const accepted = await this.applicationDAO.handleApplicationById(req.params.id, true)
@@ -98,6 +117,12 @@ class Controller {
             res.status(500).json({message: error.message})
         }
     }
+    /**
+     * Sets application status to "rejected"
+     * @param {*} req application id
+     * @param {*} res rejected application
+     * @returns 
+     */
     async rejectApplication(req, res) {
         try{
             const rejected = await this.applicationDAO.handleApplicationById(req.params.id, false)
@@ -108,6 +133,12 @@ class Controller {
             res.status(500).json({message: error.message})
         }
     }
+    /**
+     * Sets application status to "pending"
+     * @param {*} req application id
+     * @param {*} res updated application 
+     * @returns 
+     */
     async pendingApplication(req, res) {
         try{
             const pending = await this.applicationDAO.handleApplicationById(req.params.id, null)
@@ -119,6 +150,11 @@ class Controller {
         }
     }
 
+    /**
+     * Logs in person by verifying username and password, creates an authorisation token
+     * @param {*} req login handle and password
+     * @param {*} res authorisation token
+     */
     async login(req, res) {
         try {
             const {loginHandle, password} = req.body
@@ -142,10 +178,9 @@ class Controller {
     }
 
     /**
-     * 
-     * @param {*} req 
-     * @param {*} res 
-     * @returns 
+     * Creates a new user
+     * @param {*} req first name, last name, personal number, username, password
+     * @param {*} res user
      */
     async signup(req, res) {
         try {
@@ -175,6 +210,10 @@ class Controller {
         }
     }
 
+    /**
+     * Controller router endpoints
+     * @returns router
+     */
     getRouter() {
         return this.router
     }

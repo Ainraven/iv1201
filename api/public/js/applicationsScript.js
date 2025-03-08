@@ -23,8 +23,6 @@ async function getApplications() {
         if(!res.ok) {
             throw new Error(`API error`, res.status)
         }
-        console.log("RESPONSE: ", res.status)
-
 
         const data = await res.json()
         showApplications(data)
