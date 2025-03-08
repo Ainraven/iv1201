@@ -67,3 +67,7 @@ async function logout() {
     localStorage.removeItem("token")
     window.location.replace("/")
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadNavigation();
+});
