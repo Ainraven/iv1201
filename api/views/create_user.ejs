@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create User</title>
+        <script src="/js/create_user_script.js"></script>
+        <link rel="stylesheet" href="/css/create_user_style.css">
+    </head>
+    <body>
+        <div id="background">
+            <h1 style="color: whitesmoke;">Create an account</h1>
+            <div id="inputs-background">
+                <form id="inputs">
+                    <input id="firstname" type="text" placeholder="Enter your firstname"><br>
+                    <input id="lastname" type="text" placeholder="Enter your lastname"><br>
+                    <input id="person-number" type="text" placeholder="Enter your person number: YYMMDD-XXXX"><br>
+                    <input id="username" type="text" placeholder="Enter your username"><br>
+                    <input id="password" type="password" placeholder="Enter your password"><br>
+                </form>
+                <div>
+                    <button id="sumbit-button" onclick="createNewUser()" style="color: whitesmoke;">Submit</button>
+                    <button id="login-button" onclick="sendUserToLoginPage()" style="color: whitesmoke;">Back to login</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
