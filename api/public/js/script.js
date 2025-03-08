@@ -1,4 +1,7 @@
-
+/**
+ * Finds user by their userID 
+ * @returns json of a found user
+ */
 async function getUserById() {    
     const userID = document.getElementById("userID").value
     if(!userID) {
@@ -19,7 +22,11 @@ async function getUserById() {
         document.getElementById("output").innerText = "Error fetching a user."
     }
 }
-    
+ 
+/**
+ * Prints user information
+ * @param {*} data user
+ */
 async function printUser(data) {
     const user = Array.isArray(data) ? data[0] : data;
 
@@ -29,6 +36,9 @@ async function printUser(data) {
         surname: ${data[0].surname}`
 }
 
+/**
+ * Fetches all users from the database
+ */
 async function getAllUsers() {
     try{
         const res = await fetch(`api/users`)
@@ -36,13 +46,8 @@ async function getAllUsers() {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-
     }
     catch (error) {
         console.error(`Error in showAllUsers(): `, error)
     }
-
-}
-async function printAllUsers() {
-
 }

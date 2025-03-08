@@ -1,10 +1,55 @@
 body {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     background-color: blanchedalmond;
+    
 }
 
 #logo {
     size: 5vw;
 }
+
+/* HEADER */
+#mainHeader {
+    background-color: lightslategray;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    font-weight: bold;
+    font-size: medium;
+}
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+#navlist {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-evenly;
+    gap: 5vw;
+    padding: 0;
+}
+#navlist li {
+    display: inline;
+}
+#navlist a {
+    color: white;
+    text-decoration: none;
+    font-size: 2vw;
+    padding: 8px 15px;
+    transition: background 0.3s;
+}
+#navlist a:hover {
+    background-color: rgb(89, 103, 115);
+    border-radius: 5px;
+}
+
 
 #applications {
 
