@@ -131,6 +131,23 @@ class ApplicationDAO{
     }
 
     /**
+     * Method used to find an application based on user ID in the database.
+     * 
+     * @param {int} userID used to match with an existing person_id in the database
+     * @returns a JSON with the selected row in the application table, 
+     * containing person_id, application_id and application_status
+     */
+        async findApplicationByUserId(userID){
+            try{
+                const application = await this.application.findAll({
+                    where:{person_id: userID}})
+                return application
+            }catch(error){
+                console.debug("findApplicationByUserID couldn't find application " + error)
+            }
+        }
+
+    /**
      * A helper method used to give all persons in the person table with an applicant role 
      * an entry in the application table. 
      */
