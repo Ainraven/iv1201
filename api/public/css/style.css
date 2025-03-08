@@ -11,7 +11,7 @@ body {
 }
 
 /* HEADER */
-.mainHeader {
+#mainHeader {
     background-color: lightslategray;
     position: sticky;
     top: 0;
@@ -20,7 +20,7 @@ body {
     font-weight: bold;
     font-size: medium;
 }
-.navbar {
+#navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,24 +28,24 @@ body {
     margin: 0 auto;
     padding: 0 20px;
 }
-.navlist {
+#navlist {
     display: flex;
     flex-grow: 1;
     justify-content: space-evenly;
     gap: 5vw;
     padding: 0;
 }
-.navlist li {
+#navlist li {
     display: inline;
 }
-.navlist a {
+#navlist a {
     color: white;
     text-decoration: none;
     font-size: 2vw;
     padding: 8px 15px;
     transition: background 0.3s;
 }
-.navlist a:hover {
+#navlist a:hover {
     background-color: rgb(89, 103, 115);
     border-radius: 5px;
 }

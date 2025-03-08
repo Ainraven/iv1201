@@ -1,7 +1,6 @@
 const express = require("express")
 const router = express.Router()
 const Controller = require("../controller/controller")
-const authenticateToken = require('../middleware/authorisationMiddle')
 
 const contr = new Controller()
 
