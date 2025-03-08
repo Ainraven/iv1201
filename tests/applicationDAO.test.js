@@ -46,8 +46,8 @@ describe('Application Database Integration Tests', () => {
         const user1 = await userDAO.createUser(person1)
         const user2 = await userDAO.createUser(person2)
 
-        const app1 = await applicationDAO.createApplication(user1.person_id)
-        const app2 = await applicationDAO.createApplication(user2.person_id)
+        const app1 = await applicationDAO.createApplication(user1.person_id, 1)
+        const app2 = await applicationDAO.createApplication(user2.person_id, 1)
         
         await expect(app1).not.toBeNull()
         await expect(app1.person_id).toBe(user1.person_id)
@@ -57,30 +57,32 @@ describe('Application Database Integration Tests', () => {
 
     test('should find an existing epplication', async() =>{
         const user = await userDAO.createUser(person1)
-        const app = await applicationDAO.createApplication(user.person_id)
+        const app = await applicationDAO.createApplication(user.person_id,1)
         const foundApp = await applicationDAO.findApplicationByApplicationId(app.application_id)
+
+        console.debug(foundApp)
 
         await expect(foundApp).not.toBeNull()
         await expect(app.application_id).toEqual(foundApp[0].application_id)
         await expect(app.person_id).toEqual(foundApp[0].person_id)
-        await expect(app.application_status).toEqual(foundApp[0].application_status)
+        await expect(app.application_status_id).toEqual(foundApp[0].application_status_id)
     })
 
     test('should alter an existing application', async ()=>{
         const user = await userDAO.createUser(person1)
-        const appBeforeChange = await applicationDAO.createApplication(user.person_id)
-        
-        await expect(appBeforeChange).not.toBeNull()
-        await expect(appBeforeChange.application_status).toBe(null)
+        const appBeforeChange = await applicationDAO.createApplication(user.person_id,1)
 
-        const app = await applicationDAO.handleApplicationByPersonId(user.person_id, true)
-        await expect(app[0].application_status).not.toBe(appBeforeChange.application_status)
-        await expect(app[0].application_status).toEqual(true)
+        await expect(appBeforeChange).not.toBeNull()
+        await expect(appBeforeChange.application_status_id).toBe(1)
+
+        const app = await applicationDAO.handleApplicationByPersonId(user.person_id, 2)
+        await expect(app[0].application_status_id).not.toBe(appBeforeChange.application_status_id)
+        await expect(app[0].application_status_id).toEqual(2)
     })
 
     test('should delete an application from database', async() => {
         const user = await userDAO.createUser(person1)
-        const app = await applicationDAO.createApplication(user.person_id)
+        const app = await applicationDAO.createApplication(user.person_id,1)
         await applicationDAO.deleteApplicationByApplicationId(app.application_id)
         
         const deleted = await applicationDAO.findApplicationByApplicationId(app.application_id)
