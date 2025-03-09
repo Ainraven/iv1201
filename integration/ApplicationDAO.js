@@ -1,15 +1,11 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`})
-const { initModels } = require('../model/init-models')
 const cls = require('cls-hooked')
-
-const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize')
+const { getDatabase, models } = require('./dbInit')
 
-
-/* 
+/**  
 Class containing constructor for the DAO and its related methods pertaining to users. It is responsible for calls to the database.
 */
-
 class ApplicationDAO{
 
 /** 
@@ -19,19 +15,10 @@ class ApplicationDAO{
         const name = cls.createNamespace('iv1201-db')
         Sequelize.useCLS(name)
 
-        this.database = require(databaseConfigPath)
-        const models = initModels(this.database)
+        this.database = getDatabase()
+
         this.person = models.person
         this.application = models.application
-    }
-
-     /**
-     * 
-     * @returns the database which is used for transactions. This way the controller wont have
-     * to directly interact with the database object through the constructor.
-     */
-    getDatabase(){
-        return this.database
     }
 
    /**
@@ -42,11 +29,11 @@ class ApplicationDAO{
     * TRUE:accepted, FALSE: rejected, NULL:unhandled
     * @returns a JSON with the application
     */
-    async createApplication(personID, status){
+    async createApplication(personID, statusID){
         try{
             const application = await this.application.create({
                 person_id : personID,
-                application_status_id : status,
+                application_status_id : statusID,
                 })
             return application
         }catch(error){
@@ -63,9 +50,9 @@ class ApplicationDAO{
      * @returns a JSON of the updated row in the application table. This is stored in the 1st index
      * which is why we return only that
      */
-    async handleApplicationById(applicationID, status){
+    async handleApplicationById(applicationID, statusID){
         try{
-            const application = await this.application.update({application_status_id: status},
+            const application = await this.application.update({application_status_id: statusID},
                 {where: {application_id: applicationID},
                 returning:true      //used to return the updated row
                 }

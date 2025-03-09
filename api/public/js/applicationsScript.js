@@ -88,8 +88,7 @@ async function showApplications(data) {
                 console.log(`Status ${application.application_status_id} does not exist`)
                 break
         }
-        // status.appendChild(document.createTextNode(
-        //     `${JSON.stringify(application.application_status_id, null, 2)}`))
+
 
         entry.appendChild(name)
         entry.appendChild(surname)
@@ -131,7 +130,9 @@ async function acceptApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
+
         document.getElementById(`status-application${id}`).innerHTML = `Accepted`
+
     }
     catch (error) {
         console.error(`Error in acceptApplication();`, error)
@@ -149,6 +150,7 @@ async function rejectApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
+
         document.getElementById(`status-application${id}`).innerHTML = `Rejected`
     }
     catch (error) {
@@ -167,6 +169,7 @@ async function pendingApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
+
         document.getElementById(`status-application${id}`).innerHTML = `Pending`
     }
     catch (error) {

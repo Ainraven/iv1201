@@ -33,6 +33,7 @@ async function renderProfileInfo() {
             throw new Error(`API error`, appl.status)
         }
         const applData = await appl.json()
+
         switch(applData[0].application_status_id) {
             case 1: 
                 addLine('h2', "Application status", "Pending")

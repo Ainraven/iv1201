@@ -18,7 +18,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     application_status_id:{
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
+        references: {
+          model: 'application_status',
+          key: 'application_status_id'
+        }
     }
   }, {
     sequelize,

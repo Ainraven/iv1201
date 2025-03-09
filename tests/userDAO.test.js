@@ -1,4 +1,5 @@
 const UserDAO = require('../integration/UserDAO.js')
+const { connectToDB, getDatabase } = require('../integration/dbInit')
 
 const person1 = {username:"abcdef", 
                 password:"fedcba", 
@@ -19,7 +20,8 @@ const person2 = {username:"JoeMama",
 
 describe('UserDAO Database Integration Tests', () => {
     let userDAO
-    beforeAll( () => {
+    beforeAll(async () => {
+        await connectToDB() 
         process.env.NODE_ENV = "test"   //used to use an emtpy database with a similar structure to the "actual" database
         userDAO = new UserDAO()
     })
@@ -29,14 +31,14 @@ describe('UserDAO Database Integration Tests', () => {
     })
 
     afterAll(async () => {
-        const db = userDAO.getDatabase()
+        const db = getDatabase()
         await db.close()
         process.env.NODE_ENV = ""
     })
 
      test('should successfully connect to the database',async () => {
         console.log = jest.fn() // Capture console output
-        await userDAO.connectToDB()            
+        await connectToDB()            
         await expect(console.log).toHaveBeenCalledWith("Connection has been established successfully.")
        
     })

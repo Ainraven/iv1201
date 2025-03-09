@@ -1,10 +1,9 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`})
-const { initModels } = require('../model/init-models')
 const cls = require('cls-hooked')
 const bcrypt = require('bcrypt')
-
-const databaseConfigPath = './config/database.js'
 const Sequelize = require ('sequelize')
+const { getDatabase, models } = require('./dbInit')
+
 
 /* 
 Class containing constructor for the DAO and its related methods pertaining to users. It is responsible for calls to the database.
@@ -18,37 +17,8 @@ class UserDAO {
         const name = cls.createNamespace('iv1201-db')
         Sequelize.useCLS(name)
 
-        this.database = require(databaseConfigPath)
-        const models = initModels(this.database)
+        this.database = getDatabase()
         this.person = models.person
-    }
-
-    /*
-    Method used to confirm that a connection has been established
-    */ 
-    async connectToDB(){
-        try {
-            await this.database.authenticate()
-            console.log('Connection has been established successfully.')
-            await this.database.models.role.sync()
-            await this.database.models.person.sync()
-            await this.database.models.competence.sync()
-            await this.database.models.competence_profile.sync()
-            await this.database.models.availability.sync()
-            await this.database.models.application.sync()
-        
-        } catch (error) {
-            console.error('Unable to connect to the database:', error)
-        }
-    }
-
-    /**
-     * 
-     * @returns the database which is used for transactions. This way the controller wont have
-     * to directly interact with the database object through the constructor.
-     */
-    getDatabase(){
-        return this.database
     }
 
    /**
