@@ -32,8 +32,9 @@ This document lists different architectural decisions made for this project and 
 - **npm** is used to build the project and configure the required dependencies.
 - **Express.js** is the chosen framework.
 - **Jest** is used for testing.
-- **cls-hooked**
-- **sequelize**
+- **cls-hooked** 
+- **Sequelize** Connect and interact with the database
+- **JWT (JSON Web Tokens)** helps configure authorisation and authentication
 
 ## Frontend
 - **EJS** is used in frontend views with incorporation of HTML, CSS and Javascript.
