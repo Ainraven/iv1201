@@ -33,7 +33,7 @@ async function renderProfileInfo() {
             throw new Error(`API error`, appl.status)
         }
         const applData = await appl.json()
-        addLine('h2', "Application status", applData[0].application_status)
+        addLine('h2', "Application status", applData[0].application_status_id)
     }
     
     console.log("THIS IS DATA", data)

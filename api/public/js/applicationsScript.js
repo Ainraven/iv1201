@@ -51,7 +51,7 @@ async function showApplications(data) {
         surname.appendChild(document.createTextNode(
             `${JSON.stringify(application.person.surname, null, 2).replace(/\"/g, "")}`))
         status.appendChild(document.createTextNode(
-            `${JSON.stringify(application.application_status, null, 2).replace(/\"/g, "")}`))
+            `${JSON.stringify(application.application_status_id, null, 2).replace(/\"/g, "")}`))
 
         entry.appendChild(name)
         entry.appendChild(surname)
@@ -93,7 +93,7 @@ async function acceptApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status}`
+        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status_id}`
     }
     catch (error) {
         console.error(`Error in acceptApplication();`, error)
@@ -111,7 +111,7 @@ async function rejectApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status}`
+        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status_id}`
     }
     catch (error) {
         console.error(`Error in rejectApplication();`, error)
@@ -129,7 +129,7 @@ async function pendingApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status}`
+        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status_id}`
     }
     catch (error) {
         console.error(`Error in pendingApplication();`, error)
