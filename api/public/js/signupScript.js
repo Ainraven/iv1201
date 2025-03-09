@@ -31,10 +31,13 @@ async function createNewUser() {
         }
 
         const data = await res.json()
-
-        if (data) {
+        if (!data) {
             alert("Username already in use. Username must be unique!")
+            return
         }
+
+        alert(`You successfully signed up, ${data.name}! Welcome!`)
+        window.location.replace("/auth/login")
 
     } catch (error) {
         console.error("Error in createNewUser()", error)
