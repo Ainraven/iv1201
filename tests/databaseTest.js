@@ -53,7 +53,9 @@ async function viewAllApplications(){
 
      (async () => {
         await connectToDB()
-        await userDAO.encryptExistingPasswords();
+        await userDAO.encryptExistingPasswords()
+        //await applicationDAO.createUnhandledApplicationsForExistingApplicants()
+
         await database.close()
     })()
 

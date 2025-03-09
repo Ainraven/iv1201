@@ -1,6 +1,4 @@
 require('dotenv').config({path: `${process.cwd()}/../.env`})
-const cls = require('cls-hooked')
-const Sequelize = require ('sequelize')
 const { getDatabase, models } = require('./dbInit')
 
 /**  
@@ -12,9 +10,6 @@ class ApplicationDAO{
  * Initializes the database based on the configurered sequelize instance from database.js
  */
     constructor(){
-        const name = cls.createNamespace('iv1201-db')
-        Sequelize.useCLS(name)
-
         this.database = getDatabase()
 
         this.person = models.person
