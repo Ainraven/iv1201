@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     application_status_id:{
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.INTEGER,
         allowNull: true
     }
   }, {

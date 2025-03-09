@@ -97,7 +97,7 @@ class ApplicationDAO{
     async showAllApplications(){
         try{
             const people = await this.application.findAll( { 
-                limit:30,
+                // limit:30,
                 include: [{
                   model: this.person,
                   as:"person",
