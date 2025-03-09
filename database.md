@@ -1,22 +1,31 @@
 # Database structure
-This is how database for this project is configured.
+This is how database for this project is configured. 
 
-The database has 6 tables:
+The database has 7 tables:
 - application
 - availability
 - competence
 - competence_profile
 - person
 - role
+- application_status
 
 ## Table - application table
 Stores applications, applicants connected to them and applications' statuses.
 Columns:
 - **application_id** (Integer): PK, identification number for an application
 - **person_id** (Integer): FK, person, to whom the applciation is connected
-- **application_status** (Boolean): Can either be accepted, rejected or pending
+- **application_status_id** (Integer): FK, application_status, used to map different statuses
 Rows:
-Each row is an job application
+Each row represents a job application
+
+## Table - application_status table
+Stores applications, applicants connected to them and applications' statuses.
+Columns:
+- **application_status_id** (Integer): PK, identification number for an application status
+- **name** (Character 255): name of the status message, currently "PENDING", "ACCEPTED and "REJECTED" mapped to 1,2 and 3 respectively
+Rows:
+Each row represents a status message and its associated id.
 
 ## Table - availability
 Stores available dates for each person
