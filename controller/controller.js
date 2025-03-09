@@ -214,9 +214,10 @@ class Controller {
                 const {firstname, lastname, personalNumber, username, password} = req.body
 
                 const userIsRegistered = await this.userDAO.findPersonByUsername(username)
+                var newUser = null
 
                 if (!userIsRegistered) {
-                   const newUser = await this.userDAO.createUser({
+                   newUser = await this.userDAO.createUser({
                         username: username,
                         password: password,
                         firstname: firstname,
