@@ -27,7 +27,7 @@ async function getApplications() {
     }
     catch (error) {
         console.error(`Error in getAplications();`, error)
-        window.location.replace("/403")
+        // window.location.replace("/403")
     }
 }
 
@@ -74,7 +74,7 @@ async function showApplications(data) {
         surname.appendChild(document.createTextNode(
             `${JSON.stringify(application.person.surname, null, 2).replace(/\"/g, "")}`))
         status.appendChild(document.createTextNode(
-            `${JSON.stringify(application.application_status, null, 2).replace(/\"/g, "")}`))
+            `${JSON.stringify(application.application_status_id, null, 2).replace(/\"/g, "")}`))
 
         entry.appendChild(name)
         entry.appendChild(surname)

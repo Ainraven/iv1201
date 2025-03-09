@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'person_id'
       }
     },
-    application_status:{
+    application_status_id:{
         type: Sequelize.BOOLEAN,
         allowNull: true
     }
