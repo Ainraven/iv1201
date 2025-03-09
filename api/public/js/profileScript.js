@@ -33,7 +33,20 @@ async function renderProfileInfo() {
             throw new Error(`API error`, appl.status)
         }
         const applData = await appl.json()
-        addLine('h2', "Application status", applData[0].application_status_id)
+
+        switch(applData[0].application_status_id) {
+            case 1: 
+                addLine('h2', "Application status", "Pending")
+                break 
+            case 2: 
+                addLine('h2', "Application status", "Accepted")
+                break 
+            case 3: 
+                addLine('h2', "Application status", "Rejected")
+                break
+            default:
+                console.log(`Status ${application.application_status_id} does not exist`)
+        }
     }
     
     console.log("THIS IS DATA", data)
@@ -72,5 +85,5 @@ function parseJwt(token) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    renderProfileInfo();
-});
+    renderProfileInfo()
+})

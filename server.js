@@ -34,6 +34,14 @@ app.use('/api', contr.getRouter())
 app.use('/auth', require('./routes/authRoutes'))
 app.use('/applications', require('./routes/applicationsRoutes'))
 
+app.use("/403", (req, res) => {
+  res.status(403).render("403")
+})
+// Page not found, must be last amongst routes
+app.use((req, res) => {
+  res.status(404).render("404")
+})
+
 // Server
 const PORT = process.env.SERVER_PORT || 3000
 app.listen(PORT, '0.0.0.0', () => {

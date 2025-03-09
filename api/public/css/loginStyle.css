@@ -27,7 +27,7 @@ body {
     border-color: whitesmoke;
 }
 
-#password {
+#loginPassword {
     width: 70vh;
     padding-top: 5px;
     padding-bottom: 3px;

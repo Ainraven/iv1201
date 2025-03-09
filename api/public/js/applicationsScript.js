@@ -27,6 +27,7 @@ async function getApplications() {
     }
     catch (error) {
         console.error(`Error in getAplications();`, error)
+        // window.location.replace("/403")
     }
 }
 
@@ -35,7 +36,29 @@ async function getApplications() {
  * @param {json} data json file with applications
  */
 async function showApplications(data) {
-    var list = document.getElementById("applications")
+    var appl = document.getElementById("applicationList")
+    
+    var title = document.createElement('h1')
+    title.appendChild(document.createTextNode("Applications"))
+    appl.appendChild(title)
+    
+    var list = document.createElement('table')
+    appl.appendChild(list)
+    var tr = document.createElement('tr')
+    list.appendChild(tr)
+    var nameTitle = document.createElement('th')
+    nameTitle.appendChild(document.createTextNode("Name"))
+    var surnameTitle = document.createElement('th')
+    surnameTitle.appendChild(document.createTextNode("Surname"))
+    var statusTitle = document.createElement('th')
+    statusTitle.appendChild(document.createTextNode("Application status"))
+    tr.appendChild(nameTitle)
+    tr.appendChild(surnameTitle)
+    tr.appendChild(statusTitle)
+    tr.appendChild(document.createElement('th'))
+    tr.appendChild(document.createElement('th'))
+    tr.appendChild(document.createElement('th'))
+
     for(const application of data){
         var entry = document.createElement('tr')
         entry.setAttribute("class", "applicationItem")
@@ -50,8 +73,22 @@ async function showApplications(data) {
             `${JSON.stringify(application.person.name, null, 2).replace(/\"/g, "")}`))
         surname.appendChild(document.createTextNode(
             `${JSON.stringify(application.person.surname, null, 2).replace(/\"/g, "")}`))
-        status.appendChild(document.createTextNode(
-            `${JSON.stringify(application.application_status_id, null, 2).replace(/\"/g, "")}`))
+
+        switch(application.application_status_id){
+            case 1: 
+                status.appendChild(document.createTextNode("Pending"))
+                break 
+            case 2: 
+                status.appendChild(document.createTextNode("Accepted"))
+                break 
+            case 3: 
+                status.appendChild(document.createTextNode("Rejected"))
+                break
+            default:
+                console.log(`Status ${application.application_status_id} does not exist`)
+                break
+        }
+
 
         entry.appendChild(name)
         entry.appendChild(surname)
@@ -93,7 +130,9 @@ async function acceptApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status_id}`
+
+        document.getElementById(`status-application${id}`).innerHTML = `Accepted`
+
     }
     catch (error) {
         console.error(`Error in acceptApplication();`, error)
@@ -111,7 +150,8 @@ async function rejectApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status_id}`
+
+        document.getElementById(`status-application${id}`).innerHTML = `Rejected`
     }
     catch (error) {
         console.error(`Error in rejectApplication();`, error)
@@ -129,7 +169,8 @@ async function pendingApplication(id) {
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
-        document.getElementById(`status-application${id}`).innerHTML = `${data[0].application_status_id}`
+
+        document.getElementById(`status-application${id}`).innerHTML = `Pending`
     }
     catch (error) {
         console.error(`Error in pendingApplication();`, error)

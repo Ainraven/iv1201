@@ -1,4 +1,46 @@
 /**
+ * Saves input to localstorage every time input is updated   
+ */
+async function updateSave() {
+    saveInput("firstname")
+    saveInput("lastname")
+    saveInput("person-number")
+    saveInput("username")
+    saveInput("password")
+}
+/**
+ * Saves input to a local storage under the name "field"
+ * @param {String} field HTML tag ID
+ */
+async function saveInput(field) {
+    const input = document.getElementById(field).value
+    console.log("Saving...", input, " in ", field)
+    localStorage.setItem(field, input)
+}
+/**
+ * Keeps input fields persistent when reloading
+ */
+async function persistentForm() {
+    persistentInput("firstname")
+    persistentInput("lastname")
+    persistentInput("person-number")
+    persistentInput("username")
+    persistentInput("password")
+}
+/**
+ * Restores an input field 
+ * @param {String} field HTML tag ID 
+ */
+async function persistentInput(field) {
+    const input = localStorage.getItem(field)
+    if(input) document.getElementById(field).value = input
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(persistentForm, 50)
+})
+
+/**
  * Tries to create a new user. If any information field in the view is not
  * filled, the function returns an alert prompting the user to fill in all
  * fields. The function then checks if username and person number is unique,
@@ -31,10 +73,20 @@ async function createNewUser() {
         }
 
         const data = await res.json()
-
-        if (data) {
+        if (!data) {
             alert("Username already in use. Username must be unique!")
+            return
         }
+
+        alert(`You successfully signed up, ${data.name}! Welcome!`)
+
+        localStorage.removeItem("firstname")
+        localStorage.removeItem("lastname")
+        localStorage.removeItem("person-number")
+        localStorage.removeItem("username")
+        localStorage.removeItem("password")
+
+        window.location.replace("/auth/login")
 
     } catch (error) {
         console.error("Error in createNewUser()", error)

@@ -199,9 +199,10 @@ class Controller {
             const {firstname, lastname, personalNumber, username, password} = req.body
 
             const user = await this.userDAO.findPersonByUsername(username)
+            var newUser
 
             if (!user) {
-                const newUser = await this.userDAO.createUser({
+                newUser = await this.userDAO.createUser({
                     username: username,
                     password: password,
                     firstname: firstname,
@@ -215,7 +216,7 @@ class Controller {
                 }
             }
 
-            return res.json(user)
+            return res.json(newUser)
 
         } catch (error) {
             res.status(500).json({message: error.message})

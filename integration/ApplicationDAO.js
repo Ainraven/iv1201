@@ -84,7 +84,7 @@ class ApplicationDAO{
     async showAllApplications(){
         try{
             const people = await this.application.findAll( { 
-                limit:10,
+                // limit:30,
                 include: [{
                   model: this.person,
                   as:"person",
@@ -105,7 +105,7 @@ class ApplicationDAO{
      * 
      * @param {int} applicationID used to match with an existing application_id in the database
      * @returns a JSON with the selected row in the application table, 
-     * containing person_id, application_id and application_status
+     * containing person_id, application_id and application_status_id
      */
     async findApplicationByApplicationId(applicationID){
         try{
@@ -122,7 +122,7 @@ class ApplicationDAO{
      * 
      * @param {int} userID used to match with an existing person_id in the database
      * @returns a JSON with the selected row in the application table, 
-     * containing person_id, application_id and application_status
+     * containing person_id, application_id and application_status_id
      */
         async findApplicationByUserId(userID){
             try{
