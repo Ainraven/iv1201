@@ -1,5 +1,15 @@
+const { Sequelize } = require('sequelize')
+
+//Initializes the database based on the exported sequelize instance from database.js
 const databaseConfigPath = './config/database.js'
 const database = require(databaseConfigPath)
+
+//Used to get managed transactions through sequelize.
+const cls = require('cls-hooked')
+const name = cls.createNamespace('iv1201-db')
+Sequelize.useCLS(name)
+
+//Initializes the models 
 const {initModels} = require('../model/init-models')
 const models = initModels(database)
 

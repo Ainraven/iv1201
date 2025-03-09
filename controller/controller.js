@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 const UserDAO = require('../integration/UserDAO')
 const ApplicationDAO = require('../integration/ApplicationDAO')
 const authenticateToken = require('../middleware/authorisationMiddle')
+const { getDatabase } = require('../integration/dbInit')
+
 
 /**
  * Handles calls between frontend and backend
@@ -34,6 +36,10 @@ class Controller {
         this.router.get(`/applications/accept/:id`, this.acceptApplication)
         this.router.get(`/applications/reject/:id`, this.rejectApplication)
         this.router.get(`/applications/pending/:id`, this.pendingApplication)
+
+        //Used for transactions. Transaction object is automatically passed to each query through cls, but eg t1 is still needed as a parameter
+        //Transactions are used for methods that manipulate the database, or require multiple calls.
+        this.database = getDatabase()
     }
 
     /**
@@ -120,14 +126,16 @@ class Controller {
      * @returns 
      */
     async acceptApplication(req, res) {
-        try{
-            const accepted = await this.applicationDAO.handleApplicationById(req.params.id, 2)
-            if(!accepted) return res.status(404).json({message: "Applications not found"})
-            res.json(accepted)
-        }
-        catch (error) {
-            res.status(500).json({message: error.message})
-        }
+        return await this.database.transaction(async (t1) =>  { 
+            try{
+                const accepted = await this.applicationDAO.handleApplicationById(req.params.id, 2)
+                if(!accepted) return res.status(404).json({message: "Applications not found"})
+                res.json(accepted)
+            }
+            catch (error) {
+                res.status(500).json({message: error.message})
+            }
+        })
     }
     /**
      * Sets application status to "rejected"
@@ -136,14 +144,16 @@ class Controller {
      * @returns 
      */
     async rejectApplication(req, res) {
-        try{
-            const rejected = await this.applicationDAO.handleApplicationById(req.params.id, 3)
-            if(!rejected) return res.status(404).json({message: "Applications not found"})
-            res.json(rejected)
-        }
-        catch (error) {
-            res.status(500).json({message: error.message})
-        }
+        return await this.database.transaction(async (t1) =>  { 
+            try{
+                const rejected = await this.applicationDAO.handleApplicationById(req.params.id, 3)
+                if(!rejected) return res.status(404).json({message: "Applications not found"})
+                res.json(rejected)
+            }
+            catch (error) {
+                res.status(500).json({message: error.message})
+            }
+        })
     }
     /**
      * Sets application status to "pending"
@@ -152,14 +162,16 @@ class Controller {
      * @returns 
      */
     async pendingApplication(req, res) {
-        try{
-            const pending = await this.applicationDAO.handleApplicationById(req.params.id, 1)
-            if(!pending) return res.status(404).json({message: "Applications not found"})
-            res.json(pending)
-        }
-        catch (error) {
-            res.status(500).json({message: error.message})
-        }
+        return await this.database.transaction(async (t1) =>  { 
+            try{
+                const pending = await this.applicationDAO.handleApplicationById(req.params.id, 1)
+                if(!pending) return res.status(404).json({message: "Applications not found"})
+                res.json(pending)
+            }
+            catch (error) {
+                res.status(500).json({message: error.message})
+            }
+        })
     }
 
     /**
@@ -168,25 +180,27 @@ class Controller {
      * @param {*} res authorisation token
      */
     async login(req, res) {
-        try {
-            const {loginHandle, password} = req.body
+        return await this.database.transaction(async (t1) =>  { 
+            try {
+                const {loginHandle, password} = req.body
+                
+                const user = await this.userDAO.loginUser(loginHandle, password)
 
-            const user = await this.userDAO.loginUser(loginHandle, password)
+                if(!user) {
+                    return res.status(404).json({message: "User not found"})
+                }
 
-            if(!user) {
-                return res.status(404).json({message: "User not found"})
+                const token = jwt.sign(
+                    {id: user.person_id, username: user.username, role: user.role_id},
+                    process.env.JWT_SECRET,
+                    {expiresIn: '1h'}
+                )
+                res.json({token})
             }
-
-            const token = jwt.sign(
-                 {id: user.person_id, username: user.username, role: user.role_id},
-                 process.env.JWT_SECRET,
-                 {expiresIn: '1h'}
-            )
-            res.json({token})
-        }
-        catch (error) {
-            res.status(500).json({message: error.message})
-        }
+            catch (error) {
+                res.status(500).json({message: error.message})
+            }
+        })
     }
 
     /**
@@ -195,32 +209,33 @@ class Controller {
      * @param {*} res user
      */
     async signup(req, res) {
-        try {
-            const {firstname, lastname, personalNumber, username, password} = req.body
+        return await this.database.transaction(async (t1) =>  { 
+            try {
+                const {firstname, lastname, personalNumber, username, password} = req.body
 
-            const user = await this.userDAO.findPersonByUsername(username)
-            var newUser
+                const userIsRegistered = await this.userDAO.findPersonByUsername(username)
 
-            if (!user) {
-                newUser = await this.userDAO.createUser({
-                    username: username,
-                    password: password,
-                    firstname: firstname,
-                    lastname: lastname,
-                    personalNumber: personalNumber,
-                    email: null,
-                    role: 2
-                })
-                if (!newUser) {
-                    return res.status(500).json({message: "Unable to create new user"})
+                if (!userIsRegistered) {
+                   const newUser = await this.userDAO.createUser({
+                        username: username,
+                        password: password,
+                        firstname: firstname,
+                        lastname: lastname,
+                        personalNumber: personalNumber,
+                        email: null,
+                        role: 2
+                    })
+                    if (!newUser) {
+                        return res.status(500).json({message: "Unable to create new user"})
+                    }
                 }
+
+                return res.json(newUser)
+
+            } catch (error) {
+                res.status(500).json({message: error.message})
             }
-
-            return res.json(newUser)
-
-        } catch (error) {
-            res.status(500).json({message: error.message})
-        }
+        })
     }
 
     /**
