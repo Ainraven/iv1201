@@ -11,11 +11,11 @@
             <h1 style="color: whitesmoke;">Create an account</h1>
             <div id="inputs-background">
                 <form id="inputs">
-                    <input id="firstname" type="text" placeholder="Enter your firstname"><br>
-                    <input id="lastname" type="text" placeholder="Enter your lastname"><br>
-                    <input id="person-number" type="text" placeholder="Enter your person number: YYMMDD-XXXX"><br>
-                    <input id="username" type="text" placeholder="Enter your username"><br>
-                    <input id="password" type="password" placeholder="Enter your password"><br>
+                    <input id="firstname" type="text" placeholder="Enter your firstname" oninput="updateSave()"><br>
+                    <input id="lastname" type="text" placeholder="Enter your lastname" oninput="updateSave()"><br>
+                    <input id="person-number" type="text" placeholder="Enter your person number: YYMMDD-XXXX" oninput="updateSave()"><br>
+                    <input id="username" type="text" placeholder="Enter your username" oninput="updateSave()"><br>
+                    <input id="password" type="password" placeholder="Enter your password" oninput="updateSave()"><br>
                 </form>
                 <div>
                     <button id="sumbit-button" onclick="createNewUser()" style="color: whitesmoke;">Submit</button>

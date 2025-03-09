@@ -52,7 +52,7 @@ function parseJwt(token) {
     try {
         return JSON.parse(atob(token.split(".")[1]))
     } catch (err) {
-        console.error("Invalid token format", e)
+        console.error("Invalid token format", err)
         return null
     }
 }
@@ -66,5 +66,5 @@ async function logout() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    loadNavigation();
-});
+    loadNavigation()
+})

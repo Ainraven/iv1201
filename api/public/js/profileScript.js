@@ -84,5 +84,5 @@ function parseJwt(token) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    renderProfileInfo();
-});
+    renderProfileInfo()
+})
