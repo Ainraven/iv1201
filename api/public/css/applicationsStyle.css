@@ -1,0 +1,19 @@
+
+#applicationList {
+    text-align: center;
+}
+#applicationList table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+#applicationList th,td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    width: 16.6%;
+}
+#applicationList th {
+    background-color: #444;
+    color:white;
+}

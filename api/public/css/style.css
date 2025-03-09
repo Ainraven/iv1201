@@ -6,10 +6,6 @@ body {
     
 }
 
-#logo {
-    size: 5vw;
-}
-
 /* HEADER */
 #mainHeader {
     background-color: lightslategray;
@@ -55,18 +51,4 @@ body {
     text-align: center;
     padding: 0;
     margin: 0;
-    font-size: large;
-}
-
-
-#applications {
-
-}
-applicationItem {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-.applicationItem td, th{
-    margin: 5vw 0; 
 }
