@@ -101,7 +101,6 @@ class Controller {
      */
     async getApplications(req, res) {
         try {
-            console.log("huh")
             if (req.user.role !== 1) {
                 return res.status(403).json({ message: "Access Denied" })
             }
