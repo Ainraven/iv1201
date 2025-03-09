@@ -215,7 +215,7 @@ class Controller {
 
                 const userIsRegistered = await this.userDAO.findPersonByUsername(username)
                 var newUser = null
-                
+
                 if (!userIsRegistered) {
                    newUser = await this.userDAO.createUser({
                         username: username,
