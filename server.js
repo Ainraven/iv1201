@@ -5,6 +5,7 @@ require('dotenv').config({path: `${process.cwd()}/.env`})
 const path = require('path')
 const express = require('express')
 const Controller = require('./controller/controller')
+const ErrorHandler = require('./api/error/errorHandler')
 
 // Objects
 const app = express()
@@ -34,9 +35,17 @@ app.use('/api', contr.getRouter())
 app.use('/auth', require('./routes/authRoutes'))
 app.use('/applications', require('./routes/applicationsRoutes'))
 
+// Error handler
+app.use(ErrorHandler.errorHandler)
+
 app.use("/403", (req, res) => {
   res.status(403).render("403")
 })
+
+app.use("/500", (req, res) => {
+  res.status(500).render("500")
+})
+
 // Page not found, must be last amongst routes
 app.use((req, res) => {
   res.status(404).render("404")

@@ -50,11 +50,17 @@ class Controller {
     async getUserByID(req, res) {
         try {
             const user = await this.userDAO.findUserById(req.params.id)
-            if(!user) return res.status(404).json({message: "User not found"})
+            if(!user) {
+                const error = new Error("User not found")
+                error.status = 404
+                return next(error)
+                //return res.status(404).json({message: "User not found"})
+            }
             res.json(user)
         }
         catch (error) {
-            res.status(500).json({message: error.message})
+            next(error)
+            //res.status(500).json({message: error.message})
         }
     }
 
@@ -66,10 +72,16 @@ class Controller {
     async getUserByUsername(req, res) {
         try {
             const user = await this.userDAO.findPersonByUsername(req.param.username)
-            if (!user) return res.status(404).json({message: "User not found"})
+            if (!user) {
+                const error = new Error("User not found")
+                error.status = 404
+                return next(error)
+                //return res.status(404).json({message: "User not found"})
+            }
             res.json(user)
         } catch (error) {
-            res.status(500).json({message: error.message})
+            next(error)
+            //res.status(500).json({message: error.message})
         }
     } 
 
@@ -81,21 +93,33 @@ class Controller {
     async getAllUsers(req, res) {
         try {
             const users = await this.userDAO.findAllPersons()
-            if(!users) return res.status(404).json({message: "Users not found"})
+            if(!users) {
+                const error = new Error("Users not found")
+                error.status = 404
+                return next(error)
+                //return res.status(404).json({message: "Users not found"})
+            }
             res.json(users)
         }
         catch (error) {
-            res.status(500).json({message: error.message})
+            next(error)
+            //res.status(500).json({message: error.message})
         }
     }
 
     async getApplicationByUserID(req, res) {
         try {
             const application = await this.applicationDAO.findApplicationByUserId(req.params.id)
-            if(!application) return res.status(404).json({message: "Application not found"})
+            if(!application) {
+                const error = new Error("Application not found")
+                error.status = 404
+                return next(error)
+                //return res.status(404).json({message: "Application not found"})
+            }
             res.json(application)
-        } catch (err) {
-            res.status(500).json({message: err.message})
+        } catch (error) {
+            next(error)
+            //res.status(500).json({message: err.message})
         }
     }
 
@@ -108,14 +132,23 @@ class Controller {
     async getApplications(req, res) {
         try {
             if (req.user.role !== 1) {
-                return res.status(403).json({ message: "Access Denied" })
+                const error = new Error("Access Denied")
+                error.status = 403
+                return next(error)
+                //return res.status(403).json({ message: "Access Denied" })
             }
             const applications = await this.applicationDAO.showAllApplications()
-            if(!applications) return res.status(404).json({message: "Applications not found"})
+            if(!applications) {
+                const error = new Error("Applications not found")
+                error.status = 404
+                return next(error)
+                //return res.status(404).json({message: "Applications not found"})
+            }
             res.json(applications)
         }
         catch (error) {
-            res.status(500).json({message: error.message})
+            next(error)
+            //res.status(500).json({message: error.message})
         }
     }
 
@@ -129,11 +162,17 @@ class Controller {
         return await this.database.transaction(async (t1) =>  { 
             try{
                 const accepted = await this.applicationDAO.handleApplicationById(req.params.id, 2)
-                if(!accepted) return res.status(404).json({message: "Applications not found"})
+                if(!accepted) {
+                    const error = new Error("Applications not found")
+                    error.status = 404
+                    return next(error)
+                    //return res.status(404).json({message: "Applications not found"})
+                }
                 res.json(accepted)
             }
             catch (error) {
-                res.status(500).json({message: error.message})
+                next(error)
+                //res.status(500).json({message: error.message})
             }
         })
     }
@@ -147,11 +186,17 @@ class Controller {
         return await this.database.transaction(async (t1) =>  { 
             try{
                 const rejected = await this.applicationDAO.handleApplicationById(req.params.id, 3)
-                if(!rejected) return res.status(404).json({message: "Applications not found"})
+                if(!rejected) {
+                    const error = new Error("Applications not found")
+                    error.status = 404
+                    return next(error)
+                    //return res.status(404).json({message: "Applications not found"})
+                }
                 res.json(rejected)
             }
             catch (error) {
-                res.status(500).json({message: error.message})
+                next(error)
+                //res.status(500).json({message: error.message})
             }
         })
     }
@@ -165,11 +210,17 @@ class Controller {
         return await this.database.transaction(async (t1) =>  { 
             try{
                 const pending = await this.applicationDAO.handleApplicationById(req.params.id, 1)
-                if(!pending) return res.status(404).json({message: "Applications not found"})
+                if(!pending) {
+                    const error = new Error("Applications not found")
+                    error.status = 404
+                    return next(error)
+                    //return res.status(404).json({message: "Applications not found"})
+                }
                 res.json(pending)
             }
             catch (error) {
-                res.status(500).json({message: error.message})
+                next(error)
+                //res.status(500).json({message: error.message})
             }
         })
     }
@@ -187,7 +238,10 @@ class Controller {
                 const user = await this.userDAO.loginUser(loginHandle, password)
 
                 if(!user) {
-                    return res.status(404).json({message: "User not found"})
+                    const error = new Error("User not found")
+                    error.status = 404
+                    return next(error)
+                    //return res.status(404).json({message: "User not found"})
                 }
 
                 const token = jwt.sign(
@@ -198,7 +252,8 @@ class Controller {
                 res.json({token})
             }
             catch (error) {
-                res.status(500).json({message: error.message})
+                next(error)
+                //res.status(500).json({message: error.message})
             }
         })
     }
@@ -227,14 +282,18 @@ class Controller {
                         role: 2
                     })
                     if (!newUser) {
-                        return res.status(500).json({message: "Unable to create new user"})
+                        const error = new Error("Unable to create new user")
+                        error.status = 403
+                        return next(error)
+                        //return res.status(500).json({message: "Unable to create new user"})
                     }
                 }
 
                 return res.json(newUser)
 
             } catch (error) {
-                res.status(500).json({message: error.message})
+                next(error)
+                //res.status(500).json({message: error.message})
             }
         })
     }

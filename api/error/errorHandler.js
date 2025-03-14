@@ -1,29 +1,22 @@
-const express = require("express")
 /**
- * 
+ * This class handles any types of errors and reroutes to the 
+ * propper window for the error.
  */
 class ErrorHandler {
     /**
-     * 
-     * @param {*} err 
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
-     * @returns 
+     * This static function handles all types of errors.
+     * @param {*} err: error object
+     * @param {*} req: request object
+     * @param {*} res: response object
+     * @param {*} next: next function object
      */
-    static errorsToHandle(err, req, res, next) {
-        if (err.statusCode) {
-            return err.status(err.statusCode).json({
-                status: err.status,
-                message: err.message,
-                statusCode: err.statusCode,
-            })
-        }
-        // if we have an unknown error we want to handle that as a server error
-        return res.status(500).json({
-            status: "unknown error",
-            message: "server is not working!",
-        })
+    static errorHandler(err, req, res, next) {
+        console.log("Error caught: ", err.message)
+
+        const code = err.status || 500
+        const message = err.message || "Internal server error"
+        
+        res.status(code).json({error: message})
     }
 }
 
