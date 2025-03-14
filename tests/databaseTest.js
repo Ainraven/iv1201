@@ -1,11 +1,12 @@
 
 const UserDAO = require('../integration/UserDAO.js'); 
-const ApplicationDAO = require('../integration/ApplicationDAO.js'); 
+const ApplicationDAO = require('../integration/ApplicationDAO.js')
 
+const { connectToDB, getDatabase } = require('../integration/dbInit')
 const applicationDAO = new ApplicationDAO();
 const userDAO = new UserDAO();
 
-const database = userDAO.getDatabase();
+const database = getDatabase();
 
 /**
  * Used to test method findPersonByUserName
@@ -49,15 +50,13 @@ async function viewAllApplications(){
    console.log('All applications:', JSON.stringify(applications, null, 2));
 }
 
-    userDAO.connectToDB().then(async () => {
-        await findAllPersonsTest();
-        await findPersonBasedOnUserName();
-        await findPersonBasedOnID();
-        await transactionTest(); 
-       // await deleteAllApplications();
-        await viewAllApplications();
-    });
 
+     (async () => {
+        await connectToDB()
+        await userDAO.encryptExistingPasswords()
+        //await applicationDAO.createUnhandledApplicationsForExistingApplicants()
 
+        await database.close()
+    })()
 
 

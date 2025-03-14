@@ -16,9 +16,13 @@ module.exports = function(sequelize, DataTypes) {
         key: 'person_id'
       }
     },
-    application_status:{
-        type: Sequelize.BOOLEAN,
-        allowNull: true
+    application_status_id:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'application_status',
+          key: 'application_status_id'
+        }
     }
   }, {
     sequelize,
