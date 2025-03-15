@@ -35,9 +35,6 @@ app.use('/api', contr.getRouter())
 app.use('/auth', require('./routes/authRoutes'))
 app.use('/applications', require('./routes/applicationsRoutes'))
 
-// Error handler
-app.use(ErrorHandler.errorHandler)
-
 app.use("/403", (req, res) => {
   res.status(403).render("403")
 })
@@ -50,6 +47,9 @@ app.use("/500", (req, res) => {
 app.use((req, res) => {
   res.status(404).render("404")
 })
+
+// Global error handler
+app.use(ErrorHandler.errorHandler)
 
 // Server
 const PORT = process.env.SERVER_PORT || 3000

@@ -69,7 +69,10 @@ async function createNewUser() {
         })
 
         if (!res.ok) {
-            throw new Error(`Create new user failed: ${res.status}`)
+            const error = new Error("Create new user failed.")
+            error.status = res.status
+            next(error)
+            //throw new Error(`Create new user failed: ${res.status}`)
         }
 
         const data = await res.json()
@@ -89,6 +92,7 @@ async function createNewUser() {
         window.location.replace("/auth/login")
 
     } catch (error) {
+        console.log(error.status)
         console.error("Error in createNewUser()", error)
     }
 }

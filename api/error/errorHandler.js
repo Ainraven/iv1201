@@ -1,3 +1,4 @@
+const express = require("express")
 /**
  * This class handles any types of errors and reroutes to the 
  * propper window for the error.
@@ -16,7 +17,7 @@ class ErrorHandler {
         const code = err.status || 500
         const message = err.message || "Internal server error"
         
-        res.status(code).json({error: message})
+        res.status(code).json({error: message, status: code})
     }
 }
 
