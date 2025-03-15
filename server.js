@@ -48,7 +48,7 @@ app.use((req, res) => {
   res.status(404).render("404")
 })
 
-// Global error handler
+// Global error handler (middleware)
 app.use(ErrorHandler.errorHandler)
 
 // Server

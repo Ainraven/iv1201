@@ -12,7 +12,10 @@ async function getUserById() {
     try {
         const res = await fetch(`/api/users/${userID}`)
         if(!res.ok) {
-            throw new Error(`API error:`, res.status)
+            const error = new Error("API error")
+            error.status = res.status
+            throw error
+            //throw new Error(`API error:`, res.status)
         }
         const data = await res.json()
         printUser(data)
@@ -43,11 +46,15 @@ async function getAllUsers() {
     try{
         const res = await fetch(`api/users`)
         if(!res.ok) {
-            throw new Error(`API error`, res.status)
+            const error = new Error("API error")
+            error.status = res.status
+            throw error
+            //throw new Error(`API error`, res.status)
         }
         const data = await res.json()
     }
     catch (error) {
         console.error(`Error in showAllUsers(): `, error)
+        window.location.replace(`/${error.status}`)
     }
 }

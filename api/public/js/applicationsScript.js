@@ -19,7 +19,10 @@ async function getApplications() {
             }
         })
         if(!res.ok) {
-            throw new Error(`API error`, res.status)
+            const error = new Error("API error")
+            error.status = res.status
+            throw error
+            //throw new Error(`API error`, res.status)
         }
 
         const data = await res.json()
@@ -27,6 +30,7 @@ async function getApplications() {
     }
     catch (error) {
         console.error(`Error in getAplications();`, error)
+        window.location.replace(`/${error.status}`)
         // window.location.replace("/403")
     }
 }
@@ -127,7 +131,10 @@ async function acceptApplication(id) {
     try {
         const res = await fetch(`api/applications/accept/${id}`)
         if(!res.ok) {
-            throw new Error(`API error`, res.status)
+            const error = new Error("API error")
+            error.status = res.status
+            throw error
+            //throw new Error(`API error`, res.status)
         }
         const data = await res.json()
 
@@ -136,6 +143,7 @@ async function acceptApplication(id) {
     }
     catch (error) {
         console.error(`Error in acceptApplication();`, error)
+        window.location.replace(`/${error.status}`)
     }
 }
 
@@ -147,7 +155,10 @@ async function rejectApplication(id) {
     try {
         const res = await fetch(`api/applications/reject/${id}`)
         if(!res.ok) {
-            throw new Error(`API error`, res.status)
+            const error = new Error("API error")
+            error.status = res.status
+            throw error
+            //throw new Error(`API error`, res.status)
         }
         const data = await res.json()
 
@@ -155,6 +166,7 @@ async function rejectApplication(id) {
     }
     catch (error) {
         console.error(`Error in rejectApplication();`, error)
+        window.location.replace(`/${error.status}`)
     }
 }
 
@@ -166,7 +178,10 @@ async function pendingApplication(id) {
     try {
         const res = await fetch(`api/applications/pending/${id}`)
         if(!res.ok) {
-            throw new Error(`API error`, res.status)
+            const error = new Error("API error")
+            error.status = res.status
+            throw error
+            //throw new Error(`API error`, res.status)
         }
         const data = await res.json()
 
@@ -174,5 +189,6 @@ async function pendingApplication(id) {
     }
     catch (error) {
         console.error(`Error in pendingApplication();`, error)
+        window.location.replace(`/${error.status}`)
     }
 }

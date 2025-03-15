@@ -71,7 +71,7 @@ async function createNewUser() {
         if (!res.ok) {
             const error = new Error("Create new user failed.")
             error.status = res.status
-            next(error)
+            throw error
             //throw new Error(`Create new user failed: ${res.status}`)
         }
 
@@ -92,8 +92,8 @@ async function createNewUser() {
         window.location.replace("/auth/login")
 
     } catch (error) {
-        console.log(error.status)
         console.error("Error in createNewUser()", error)
+        window.location.replace(`/${error.status}`)
     }
 }
 

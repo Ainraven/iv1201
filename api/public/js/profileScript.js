@@ -13,7 +13,10 @@ async function renderProfileInfo() {
     
     const res = await fetch(`/api/users/${decodedToken.id}`)
     if(!res.ok) {
-        throw new Error(`API error`, res.status)
+        const error = new Error("API error")
+        error.status = res.status
+        throw error
+        //throw new Error(`API error`, res.status)
     }
     
     const data = await res.json()
@@ -30,7 +33,10 @@ async function renderProfileInfo() {
         addLine('h2', "Role", "Applicant")
         const appl = await fetch(`/api/applications/${data[0].person_id}`)
         if(!appl.ok) {
-            throw new Error(`API error`, appl.status)
+            const error = new Error("API error")
+            error.status = res.status
+            throw error
+            //throw new Error(`API error`, appl.status)
         }
         const applData = await appl.json()
 

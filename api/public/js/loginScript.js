@@ -48,7 +48,10 @@ async function loginUser() {
         if(!res.ok){
             alert("Wrong password or username! Try again.")
             window.location.replace("/auth/login")
-            throw new Error(`Login failed: ${res.status}`)
+            const error = new Error("Login failed")
+            error.status = res.status
+            throw error
+            //throw new Error(`Login failed: ${res.status}`)
         }
 
         const data = await res.json()
@@ -66,6 +69,7 @@ async function loginUser() {
     } 
     catch(error) {
         console.error(`Error in loginUser()`, error)
+        window.location.replace(`/${error.status}`)
     }
 }
 
