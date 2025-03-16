@@ -11,23 +11,27 @@ async function getApplications() {
             return
         }
 
-        const res = await fetch(`/api/applications`, {
+        const res = await fetch(`/api/applications/`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
         })
+        const data = await res.json()
+
         if(!res.ok) {
-            throw new Error(`API error`, res.status)
+            if(res.status === 403)
+                window.location.replace("/403")
+            else
+                alert(data.message)
+            throw new Error(`Application fetch failed: ${res.status}`)
         }
 
-        const data = await res.json()
         showApplications(data)
     }
     catch (error) {
         console.error(`Error in getAplications();`, error)
-        // window.location.replace("/403")
     }
 }
 
@@ -126,10 +130,14 @@ async function showApplications(data) {
 async function acceptApplication(id) {
     try {
         const res = await fetch(`api/applications/accept/${id}`)
-        if(!res.ok) {
-            throw new Error(`API error`, res.status)
-        }
         const data = await res.json()
+        if(!res.ok) {
+            if(res.status === 403)
+                window.location.replace("/403")
+            else
+                alert(data.message)
+            throw new Error(`Application status modification fetch failed: ${res.status}`)
+        }
 
         document.getElementById(`status-application${id}`).innerHTML = `Accepted`
 
@@ -146,10 +154,14 @@ async function acceptApplication(id) {
 async function rejectApplication(id) {
     try {
         const res = await fetch(`api/applications/reject/${id}`)
-        if(!res.ok) {
-            throw new Error(`API error`, res.status)
-        }
         const data = await res.json()
+        if(!res.ok) {
+            if(res.status === 403)
+                window.location.replace("/403")
+            else
+                alert(data.message)
+                throw new Error(`Application status modification fetch failed: ${res.status}`)
+        }
 
         document.getElementById(`status-application${id}`).innerHTML = `Rejected`
     }
@@ -165,10 +177,14 @@ async function rejectApplication(id) {
 async function pendingApplication(id) {
     try {
         const res = await fetch(`api/applications/pending/${id}`)
-        if(!res.ok) {
-            throw new Error(`API error`, res.status)
-        }
         const data = await res.json()
+        if(!res.ok) {
+            if(res.status === 403)
+                window.location.replace("/403")
+            else
+                alert(data.message)
+                throw new Error(`Application status modification fetch failed: ${res.status}`)
+        }
 
         document.getElementById(`status-application${id}`).innerHTML = `Pending`
     }

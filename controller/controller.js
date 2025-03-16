@@ -50,7 +50,10 @@ class Controller {
     async getUserByID(req, res) {
         try {
             const user = await this.userDAO.findUserById(req.params.id)
-            if(!user) return res.status(404).json({message: "User not found"})
+            console.log("woooooooo", user)
+            if(!user || !user[0]) {
+                return res.status(404).json({message: "User not found"})
+            } 
             res.json(user)
         }
         catch (error) {
@@ -108,7 +111,7 @@ class Controller {
     async getApplications(req, res) {
         try {
             if (req.user.role !== 1) {
-                return res.status(403).json({ message: "Access Denied" })
+                return res.status(403).json({ message: "403: Access Denied" })
             }
             const applications = await this.applicationDAO.showAllApplications()
             if(!applications) return res.status(404).json({message: "Applications not found"})
@@ -187,7 +190,7 @@ class Controller {
                 const user = await this.userDAO.loginUser(loginHandle, password)
 
                 if(!user) {
-                    return res.status(404).json({message: "User not found"})
+                    return res.status(404).json({message: "Wrong password or username! Try again"})
                 }
 
                 const token = jwt.sign(

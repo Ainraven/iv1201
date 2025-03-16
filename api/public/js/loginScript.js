@@ -45,17 +45,13 @@ async function loginUser() {
             body: JSON.stringify({loginHandle, password})
         })
 
+        const data = await res.json()
         if(!res.ok){
-            alert("Wrong password or username! Try again.")
-            window.location.replace("/auth/login")
+            alert(data.message)
             throw new Error(`Login failed: ${res.status}`)
         }
 
-        const data = await res.json()
-        console.log(data)
-        
         if(!data) {
-            //alert("Wrong password or username!")
             console.log("data does not exist")
         }
 
@@ -65,6 +61,7 @@ async function loginUser() {
         window.location.replace("/")
     } 
     catch(error) {
+        alert("500: Server error")
         console.error(`Error in loginUser()`, error)
     }
 }

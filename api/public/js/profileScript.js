@@ -12,11 +12,12 @@ async function renderProfileInfo() {
     const decodedToken = parseJwt(token)
     
     const res = await fetch(`/api/users/${decodedToken.id}`)
+    const data = await res.json()
     if(!res.ok) {
+        alert(data.message)
         throw new Error(`API error`, res.status)
     }
     
-    const data = await res.json()
     
     addLine('h2', "First name", data[0].name)
     addLine('h2', "Last name", data[0].surname)
@@ -29,10 +30,11 @@ async function renderProfileInfo() {
     } else {
         addLine('h2', "Role", "Applicant")
         const appl = await fetch(`/api/applications/${data[0].person_id}`)
+        const applData = await appl.json()
         if(!appl.ok) {
+            alert(applData.message)
             throw new Error(`API error`, appl.status)
         }
-        const applData = await appl.json()
 
         switch(applData[0].application_status_id) {
             case 1: 
@@ -48,9 +50,6 @@ async function renderProfileInfo() {
                 console.log(`Status ${application.application_status_id} does not exist`)
         }
     }
-    
-    console.log("THIS IS DATA", data)
-    
 }
 /**
  * Adds a singular line 
