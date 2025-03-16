@@ -11,7 +11,7 @@ async function getApplications() {
             return
         }
 
-        const res = await fetch(`/api/applications`, {
+        const res = await fetch(`/api/applications/`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -27,7 +27,7 @@ async function getApplications() {
     }
     catch (error) {
         console.error(`Error in getAplications();`, error)
-        // window.location.replace("/403")
+        window.location.replace("/403")
     }
 }
 

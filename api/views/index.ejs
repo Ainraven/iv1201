@@ -10,7 +10,44 @@
 
     <body>
         <%- include("partials/header") %>
-        <h1>This is index page</h1>
+        <h1>Home</h1>
+        
+        <h2>THIS IS NOT A PART OF APPLICATION, THIS IS JUST TO PRESENT ERROR HANDLING</h2>
+        
+        <div id="findUser">
+            <h3>Find user by ID</h3>
+            <p>Try negative numbers or 1000+ as ID, they do not exist in database. Or not even numbers.</p>
+            <input id="userID">
+            <button onclick="getUserById()">Find User by ID!</button>
+            <p id="output">t</p>
+        </div>
+
+        <div>
+            <h3>Open applications</h3>
+            <p>Sends to 403 if logged in but do not have access, or to login page if not logged in</p>
+            <a href="/applications">Applications</a>
+
+            <h3>Open non-existing page</h3>
+            <p>Sends to 404 page</p>
+            <a href="/hileif">hileif</a>
+            <a href="/abaracadabara">abaracadabara</a>
+            <a href="/hehehe">hehehe</a>
+            
+        </div>
+
+        <div>
+            <h3>Login credentials</h3>
+            <p>For tests you can use these accounts. They are not special, just taken from the database and restored password and username for the applicant. You can also create your own applicant account through the signup page.</p>
+            <h4>Recruiter ID 6</h4>
+            <p>Username: EmiFlowers</p>
+            <p>Password: LqK20ygU3Lw</p>
+            <h4>Applicant ID 25</h4>
+            <p>Username: VioCash</p>
+            <p>Password: LqK20ygU3Lw</p>
+
+        </div>
+
+        
         
         <script src="/js/script.js"></script>
     </body>

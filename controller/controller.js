@@ -50,7 +50,11 @@ class Controller {
     async getUserByID(req, res) {
         try {
             const user = await this.userDAO.findUserById(req.params.id)
-            if(!user) return res.status(404).json({message: "User not found"})
+            console.log(user)
+            if(!user) {
+                alert("User not found, wrong ID!")
+                return res.status(404).json({message: "User not found"})
+            } 
             res.json(user)
         }
         catch (error) {
