@@ -67,12 +67,13 @@ async function createNewUser() {
             },
             body: JSON.stringify({firstname, lastname, personalNumber, username, password})
         })
+        const data = await res.json()
 
         if (!res.ok) {
+            alert(data.message)
             throw new Error(`Create new user failed: ${res.status}`)
         }
 
-        const data = await res.json()
         if (!data) {
             alert("Username already in use. Username must be unique!")
             return
@@ -89,6 +90,7 @@ async function createNewUser() {
         window.location.replace("/auth/login")
 
     } catch (error) {
+        alert("500: Server error")
         console.error("Error in createNewUser()", error)
     }
 }
@@ -109,12 +111,14 @@ window.onload = function () {
 async function getUserByUsername(username) {
     try {
         const res = await fetch(`/api/users/${username}`)
-
+        const data = await res.json()
         if (!res.ok) {
+            alert(data.message)
             throw new Error(`API error: `, res.status)
         }
         return true
     } catch (error) {
+        alert("500: Server error")
         console.error(`Fetch error: `, error)
     }
     return false
@@ -127,13 +131,16 @@ async function getUserByUsername(username) {
  * @returns true or false depending if the person number is found in the database.
  */
 async function getUserByPersonalNumber(personalNumber) {
-    const res = await fetch(`/api/users/${personalNumber}`)
     try {
+        const res = await fetch(`/api/users/${personalNumber}`)
+        const data = await res.json()
         if (!res.ok) {
+            alert(data.message)
             throw new Error(`API error: `, res.status)
         }
         return true
     } catch (error) {
+        alert("500: Server error")
         console.error(`Fetch error: `, error)
     }
 }

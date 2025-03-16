@@ -10,20 +10,24 @@ async function getUserById() {
     }
 
     try {
+
+        if(userID == 1337) {
+            console.log("hi")
+            throw new Error()
+        }
+
         const res = await fetch(`/api/users/${userID}`)
+        const data = await res.json()
         if(!res.ok) {
-            alert("Server error fetching a user.")
+            alert(data.message)
             throw new Error(`API error:`, res.status)
         }
-        const data = await res.json()
-        if(!data[0]) {
-            alert("User with this ID does not exist")
-            throw new Error(`Input error:`, res.status)
-        }
+
         printUser(data)
     }
     catch (error) {
-        console.error(`Fetch error:`, error)
+        alert("500: Server fetch error")
+        console.error(`Server fetch error:`, error)
     }
 }
  
@@ -46,11 +50,13 @@ async function getAllUsers() {
     try{
         const res = await fetch(`api/users`)
         if(!res.ok) {
+            alert("500: Server error getting users")
             throw new Error(`API error`, res.status)
         }
         const data = await res.json()
     }
     catch (error) {
+        alert("500: Server fetch error")
         console.error(`Error in showAllUsers(): `, error)
     }
 }
